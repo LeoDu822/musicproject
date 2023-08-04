@@ -219,11 +219,11 @@ class dawPageState extends State<dawpage> {
 
                             ElevatedButton(
                               onPressed: _incrementCounter,
-                              child: Text("Play"),
+                              child: Text("Track 1"),
                             ),
                             ElevatedButton(
                               onPressed: addDragable,
-                              child: Text("Add to track"),
+                              child: Text("Track 2"),
                             ),
                           ]
                       ),
