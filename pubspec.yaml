@@ -66,6 +66,7 @@ flutter:
     - assets/play.png
     - assets/stop.png
     - assets/intro.wav
+    - assets/logo-transparent-png.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

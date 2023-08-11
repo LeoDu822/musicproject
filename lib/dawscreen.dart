@@ -1,7 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:musicproject/savedsession.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:musicproject/timer.dart';
+import 'package:musicproject/widgets.dart';
+import 'SavedMelodies.dart';
 import 'chord.dart';
 
 
@@ -15,14 +18,18 @@ class dawpage extends StatefulWidget {
 }
 
 
-class dawPageState extends State<dawpage> {
 
+class dawPageState extends State<dawpage> {
+  final player = AudioPlayer();
   int _counter = 0;
   List<Widget> track1 = [];
   List<Widget> track2 = [];
   void initState()  {
     super.initState();
     print("Im playing");
+
+
+    player.setSourceUrl("https://cdn.discordapp.com/attachments/1070956419949535272/1137164260208812062/intro.wav");
   }
   void stoppage()
   {
@@ -34,9 +41,10 @@ class dawPageState extends State<dawpage> {
   }
   void playsound()
   {
+
     print("Hello");
-    final player = AudioPlayer();
     player.play(AssetSource('intro.wav'));
+    player.resume();
   }
   void nextPage(){
     Navigator.push(
@@ -51,58 +59,43 @@ class dawPageState extends State<dawpage> {
 
     );
   }
+  void nextpagemelody(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => melodypage(title: "Melody screen")),
 
+    );
+  }
+  void track1Set(index, value)
+  {
+    track1[index] = value;
+  }
+  Widget track1Get(index, direction)
+  {
+    if (index + direction > track1.length || index + direction < 0)
+      {
+        return track1[index];
+      }
+
+    return dawObject(10);
+  }
+  void track2Set(index, value)
+  {
+    track2[index] = value;
+  }
+  Widget track2Get(index, direction)
+  {
+    if (index + direction > track2.length || index + direction < 0)
+    {
+      return track2[index];
+    }
+
+    return dawObject(10);
+  }
   void addDragable()
   {
     setState(() {
-      track1.add(
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  height: 28.5,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(onPressed: (){
-
-                      }, icon: Icon(Icons.arrow_upward))
-                    ]
-                  ),
-                ),
-                Container(
-                  height: 28.4,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                      IconButton(onPressed: (){print("something");}, icon: Icon(Icons.arrow_left)),
-                        IconButton(onPressed: (){print("something");}, icon: Icon(Icons.arrow_right))
-
-                        ]
-                  ),
-                ),
-                Container(
-                  height: 28.4,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(onPressed: (){print("something");}, icon: Icon(Icons.arrow_downward))
-                      ]
-                  ),
-                )
-              ]
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(width: 5),
-              borderRadius: BorderRadius.circular(12),
-              color: Color.fromRGBO(247, 241, 253, 0.4),
-            ),
-
-            height:95.3,
-            width: 200,
-          )
-      );
+      track2.add(dawObject(100));
     });
 
   }
@@ -111,10 +104,23 @@ class dawPageState extends State<dawpage> {
     print("Hello World");
     setState(() {
 
-      _counter+=2;
+     track1.add(dawObject(100));
     });
   }
-
+  void _removeWidget(int index) {
+    setState(() {
+      if (index >= 0 && index < track1.length) {
+        track1.removeAt(index);
+      }
+    });
+  }
+  void _removeWidget2(int index) {
+    setState(() {
+      if (index >= 0 && index < track2.length) {
+        track2.removeAt(index);
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -124,36 +130,63 @@ class dawPageState extends State<dawpage> {
         preferredSize: Size.fromHeight(50),
         //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         child: AppBar(
-            title: Row(
-               children: [
 
-               ]
-
-            ),
+            backgroundColor: Color.fromRGBO(122, 122, 150, 1),
             actions: <Widget>[
               IconButton(
+
                 onPressed: playsound,
-                icon: Image.asset("assets/play.png"),
-                iconSize: 20,
+                icon: Icon(
+                    Icons.play_circle_outline,
+                  //color: Colors.green
+                ),
+                iconSize: 40,
               ),
 
               IconButton(
-                icon: Image.asset("assets/stop.png"),
-                iconSize: 30,
+                  icon: Icon(
+                    Icons.stop_circle_outlined,
+                  ),
+                iconSize: 40,
                 onPressed: ()
                 {
                   stoppage();
                 },
               ),
-              TextButton(
+              IconButton(
                   onPressed: (){
 
                     nextPage();
                   },
-                  child: Text("Saved Sessions")
+                  icon: Icon(Icons.save_outlined),
+                  iconSize: 40
+              ),
+              Container(
+                width: 190
+              ),
+
+              GestureDetector(
+                onTap: nextPage,
+                child: Container(
+                  height: 35,
+                    width: 60,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color.fromRGBO(74, 67, 77, 1),
+                        width: 3.5
+
+
+                      ),
+                        borderRadius: BorderRadius.circular(3)
+                    ),
+                  alignment: Alignment.center,
+                  child: Text("Saved", style: TextStyle(
+                    fontFamily: "Tektur"
+                  ),)
+                ),
               ),
               SizedBox(
-                width: 250,
+                width: 100,
               )
             ]
 
@@ -174,7 +207,7 @@ class dawPageState extends State<dawpage> {
                           children: [
 
                             ElevatedButton(
-                              onPressed: _incrementCounter,
+                              onPressed: nextpagemelody,
                               child: Text("Saved melodies"),
                             ),
 
@@ -192,7 +225,7 @@ class dawPageState extends State<dawpage> {
                               decoration: BoxDecoration(
                                 border: Border.all(width: 5),
                                 borderRadius: BorderRadius.circular(12),
-                                color: Color.fromRGBO(247, 241, 253, 0.4),
+                                color: Color.fromRGBO(39, 40,41, 0.8),
                               ),
                               margin: EdgeInsets.fromLTRB(0, 13, 0, 10),
                               height:100,
@@ -238,13 +271,11 @@ class dawPageState extends State<dawpage> {
                   width: 400,
                   child: Column(
                     children: [
-
-
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(width: 5),
                           borderRadius: BorderRadius.circular(12),
-                          color: Color.fromRGBO(247, 241, 253, 0.4),
+                          color: Color.fromRGBO(39, 40,41, 0.8),
                         ),
                         margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                         height:100,
@@ -258,27 +289,68 @@ class dawPageState extends State<dawpage> {
           )
         ),
       ),
+      backgroundColor: Color.fromRGBO(122, 122, 150, 1),
       body: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
+            padding: const EdgeInsets.fromLTRB(8, 25, 0, 0),
             child: Container(
 
               child: Column(
                   children: [
                     Container(
-                      color: Colors.black,
+                      color: Colors.blue,
                       height: 95.3,
                       width: 180,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 100,
+                            color: Colors.blue
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              if (track1.isNotEmpty) {
+                                _removeWidget(track1.length - 1); // Remove the last widget
+                              }
+                            },
+                            iconSize: 40,
+                            icon: Icon(
+                              Icons.restore_from_trash_outlined,
+                            ),
+                          )
+                        ]
+
+                      ),
 
                     ),
                     Container(
 
                         height: 95.3,
                         width: 180,
+                      child: Row(
+                          children: [
+                            Container(
+                                width: 100,
+                                color: Colors.red
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                if (track2.isNotEmpty) {
+                                  _removeWidget2(track2.length - 1); // Remove the last widget
+                                }
+                              },
+                              iconSize: 40,
+                              icon: Icon(
+                                Icons.restore_from_trash_outlined,
+                              ),
+                            )
+                          ]
+
+                      ),
                         decoration: BoxDecoration(border: Border(
 
-                    top: BorderSide(width: 5, color: Colors.blue),
+                    top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
 
             ),
 
@@ -289,9 +361,25 @@ class dawPageState extends State<dawpage> {
 
                       height: 95.3,
                       width: 180,
+                      child: Row(
+                          children: [
+                            Container(
+                                width: 100,
+                                color: Colors.amber
+                            ),
+                            IconButton(
+                              onPressed: _incrementCounter,
+                              iconSize: 40,
+                              icon: Icon(
+                                Icons.restore_from_trash_outlined,
+                              ),
+                            )
+                          ]
+
+                      ),
                       decoration: BoxDecoration(border: Border(
 
-                          top: BorderSide(width: 5, color: Colors.blue),
+                          top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
 
                       ),
 
@@ -301,10 +389,13 @@ class dawPageState extends State<dawpage> {
                   ]
                 ),
 
-              decoration: BoxDecoration(border: Border.all(
-                  width: 5, color: Colors.blue
+              decoration: BoxDecoration(border: Border(
+                top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+                left: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+                bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+
               ),
-                  borderRadius: BorderRadius.circular(2)
+
 
               ),
 
@@ -314,7 +405,7 @@ class dawPageState extends State<dawpage> {
           ),
           Container(
             decoration: BoxDecoration(border: Border.all(
-                width: 5, color: Colors.blue
+                width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)
             ),
                 borderRadius: BorderRadius.circular(2)
 
@@ -324,41 +415,42 @@ class dawPageState extends State<dawpage> {
                 Container(
 
                     height: 25,
-                    width: 734,
+                    width: 725,
     decoration: BoxDecoration(border: Border(
-      bottom: BorderSide(width: 5, color: Colors.blue)
+      bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8))
     ),
 
-        color: Colors.pink
+        color: Color.fromRGBO(39, 40,41, 0.8)
     ),
 
                 ),
                 Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      //children: track1
+                      children: track1
                     ),
-                    color: Colors.black,
+                    color: Color.fromRGBO(97, 103, 122, 0.7),
                     height: 95.3,
-                    width: 734
+                    width: 725
 
                 ),
                 Container(
 
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                        children: track1
+                        children: track2
 
                     ),
 
                     height: 95.3,
-                    width: 734,
+                    width: 725,
     decoration: BoxDecoration(border: Border(
-        top: BorderSide(width: 5, color: Colors.blue),
+        top: BorderSide(width: 5, color: Color.fromRGBO(39, 40,41, 0.8)),
+
 
     ),
 
-    color: Colors.red
+    color: Color.fromRGBO(97, 103, 122, 0.7),
     ),
                 ),
                 Container(
@@ -367,23 +459,24 @@ class dawPageState extends State<dawpage> {
                     mainAxisAlignment: MainAxisAlignment.start,
 
 
+
                   ),
 
                   height: 95.3,
-                  width: 734,
+                  width: 725,
                   decoration: BoxDecoration(border: Border(
-                    top: BorderSide(width: 5, color: Colors.blue),
+                    top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8)),
 
                   ),
 
-                      color: Colors.amber
+                      color: Color.fromRGBO(97, 103, 122, 0.7),
                   ),
                 )
               ]
             ),
 
               height: 500,
-              width: 734,
+              width: 725,
           ),
         ]
       )

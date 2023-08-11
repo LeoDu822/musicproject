@@ -1,6 +1,8 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'linePainter.dart';
+
+import 'dawscreen.dart';
+
 
 class dawObject extends StatelessWidget {
   late final int time;
@@ -16,7 +18,14 @@ class dawObject extends StatelessWidget {
     print(player.getDuration().then((value) => print(value?.inSeconds)));
     player.resume();
   }
+  void right()
+  {
 
+  }
+  void left()
+  {
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +33,11 @@ class dawObject extends StatelessWidget {
       child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
-              height: 28.5,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(onPressed: (){
 
-                    }, icon: Icon(Icons.arrow_upward))
-                  ]
-              ),
-            ),
             Container(
               height: 28.4,
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(onPressed: (){print("something");}, icon: Icon(Icons.arrow_left)),
                     IconButton(onPressed: (){print("something");}, icon: Icon(Icons.arrow_right))
@@ -46,19 +45,11 @@ class dawObject extends StatelessWidget {
                   ]
               ),
             ),
-            Container(
-              height: 28.4,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(onPressed: (){print("something");}, icon: Icon(Icons.arrow_downward))
-                  ]
-              ),
-            )
+
           ]
       ),
       decoration: BoxDecoration(
-        border: Border.all(width: 5),
+        border: Border.all(width: 4),
         borderRadius: BorderRadius.circular(12),
         color: Color.fromRGBO(247, 241, 253, 0.4),
       ),

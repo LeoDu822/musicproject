@@ -60,7 +60,7 @@ class splashPageState extends State<splashpage> {
                           offset: Offset(-1.5, 1.5),
                           color: Colors.white),
                     ])),
-                Image.asset("assets/logo.png", height: 245, alignment: Alignment.topCenter),
+                Image.asset("assets/logo-transparent-png.png", height: 245, alignment: Alignment.topCenter),
                 Flexible(
                   child: Align(
                     alignment: Alignment.topCenter,

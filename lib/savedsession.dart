@@ -32,28 +32,113 @@ class sessionPageState extends State<sessionpage> {
         title: Text(widget.title),
       ),
       body: Center(
+          child: Column(
+             children: [
 
-        child: Column(
+                 Row(
+                   children: [
+                     Container(
+                         decoration: const BoxDecoration(
 
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed:',
-            ),
-            Text (
-                'Press the button'
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+                             border: Border(
+                               top: BorderSide(color: Colors.white, width: 5),
+                               left: BorderSide(color: Colors.white, width: 5),
+                               right: BorderSide(color: Colors.white, width: 2.5),
+                               bottom: BorderSide(color: Colors.white, width: 2.5),
+                             ),
+                             color: Colors.yellow
+                         ),
+                       width: 304.4,
+                       height: 157.7,
+
+                     ),
+                     Container(
+                         decoration: const BoxDecoration(
+
+                             border: Border(
+                               top: BorderSide(color: Colors.white, width: 5),
+                               left: BorderSide(color: Colors.white, width: 2.5),
+                               right: BorderSide(color: Colors.white, width: 2.5),
+                               bottom: BorderSide(color: Colors.white, width: 2.5),
+                             ),
+                             color: Colors.green
+                         ),
+                         width: 304.4,
+                         height: 157.7,
+
+                     ),
+                     Container(
+                         decoration: const BoxDecoration(
+
+                             border: Border(
+                               top: BorderSide(color: Colors.white, width: 5),
+                               left: BorderSide(color: Colors.white, width: 2.5),
+                               right: BorderSide(color: Colors.white, width: 5),
+                               bottom: BorderSide(color: Colors.white, width: 2.5),
+                             ),
+                             color: Colors.blue
+                         ),
+                         width: 304.4,
+                         height: 157.7,
+
+                     )
+                   ],
+                 ),
+               Row(
+                 children: [
+                   Container(
+                     decoration: const BoxDecoration(
+
+                         border: Border(
+                           top: BorderSide(color: Colors.white, width: 2.5),
+                           left: BorderSide(color: Colors.white, width: 5),
+                           right: BorderSide(color: Colors.white, width: 2.5),
+                           bottom: BorderSide(color: Colors.white, width: 5),
+                         ),
+                         color: Colors.black
+                     ),
+                       width: 304.4,
+                       height: 157.7,
+
+                   ),
+                   Container(
+                       decoration: const BoxDecoration(
+
+                           border: Border(
+                             top: BorderSide(color: Colors.white, width: 2.5),
+                             left: BorderSide(color: Colors.white, width: 2.5),
+                             right: BorderSide(color: Colors.white, width: 2.5),
+                             bottom: BorderSide(color: Colors.white, width: 5),
+                           ),
+                           color: Colors.grey
+                       ),
+                       width: 304.4,
+                       height: 157.7,
+
+                   ),
+                   Container(
+                       decoration: const BoxDecoration(
+
+                           border: Border(
+                             top: BorderSide(color: Colors.white, width: 2.5),
+                             left: BorderSide(color: Colors.white, width: 2.5),
+                             right: BorderSide(color: Colors.white, width: 5),
+                             bottom: BorderSide(color: Colors.white, width: 5),
+                           ),
+                           color: Colors.red
+                       ),
+                       width: 304.4,
+                       height: 157.7,
+
+                   )
+                 ],
+               )
+          ]
+          )
+
+
+
+
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
