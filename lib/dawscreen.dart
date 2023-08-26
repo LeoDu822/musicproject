@@ -1,12 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:musicproject/savedsession.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:musicproject/timer.dart';
+import 'package:musicproject/upload_screen.dart';
 import 'package:musicproject/widgets.dart';
 import 'SavedMelodies.dart';
 import 'chord.dart';
-
+import 'package:path_provider/path_provider.dart';
 
 class dawpage extends StatefulWidget {
   const dawpage({super.key, required this.title});
@@ -17,15 +20,42 @@ class dawpage extends StatefulWidget {
   State<dawpage> createState() => dawPageState();
 }
 
-
+enum  MenuItem {
+  item1,
+  item2,
+  item3,
+}
 
 class dawPageState extends State<dawpage> {
   final player = AudioPlayer();
   int _counter = 0;
+  ScrollController _controller1 = ScrollController();
+  ScrollController _controller2 = ScrollController();
+  ScrollController _controller3 = ScrollController();
   List<Widget> track1 = [];
   List<Widget> track2 = [];
+
+  Future<void> _selectFile()
+  async {
+    FilePickerResult? Result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ["mid"]
+    );
+    if (Result != null)
+      {
+        print("File received");
+      }
+  }
+  void _scrollListener() {
+    print("hello");
+    if (_controller1.position.userScrollDirection == ScrollDirection.forward) {
+      _controller2.jumpTo(_controller1.offset);
+      _controller3.jumpTo(_controller1.offset);
+    }
+  }
   void initState()  {
     super.initState();
+    _controller1.addListener(_scrollListener);
     print("Im playing");
 
 
@@ -120,6 +150,7 @@ class dawPageState extends State<dawpage> {
         track2.removeAt(index);
       }
     });
+
   }
   @override
   Widget build(BuildContext context) {
@@ -186,7 +217,29 @@ class dawPageState extends State<dawpage> {
                 ),
               ),
               SizedBox(
-                width: 100,
+                width: 60,
+              ),
+              PopupMenuButton<MenuItem>(
+
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: MenuItem.item1,
+                    child: Text('Item 1'),
+                  ),
+                  PopupMenuItem(
+                    value: MenuItem.item2,
+                    child: Text('Item 2'),
+                  ),
+                  PopupMenuItem(
+                    value: MenuItem.item3,
+                    child: Text('Item 3'),
+                  ),
+                ],
+                onSelected: (value){
+                  if (value == MenuItem.item1) {
+
+                  }
+                },
               )
             ]
 
@@ -212,7 +265,14 @@ class dawPageState extends State<dawpage> {
                             ),
 
                             ElevatedButton(
-                              onPressed: _incrementCounter,
+                              onPressed: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => UploadPage()),
+
+                                );
+                              },
+
                               child: Text("Upload"),
                             )
                           ]
@@ -404,18 +464,22 @@ class dawPageState extends State<dawpage> {
             ),
           ),
           Container(
-            decoration: BoxDecoration(border: Border.all(
-                width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)
-            ),
-                borderRadius: BorderRadius.circular(2)
+          decoration: BoxDecoration(border: Border.all(
+              width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)
+          ),
+              borderRadius: BorderRadius.circular(2)
 
-            ),
-            child: Column(
-              children: [
-                Container(
+          ),
+          width: 725,
+          child: Column(
+          children: [
+            Container(
+              child: Row(
 
-                    height: 25,
-                    width: 725,
+
+              ),
+                height: 25,
+                width: 725,
     decoration: BoxDecoration(border: Border(
       bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8))
     ),
@@ -423,27 +487,28 @@ class dawPageState extends State<dawpage> {
         color: Color.fromRGBO(39, 40,41, 0.8)
     ),
 
-                ),
-                Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: track1
-                    ),
-                    color: Color.fromRGBO(97, 103, 122, 0.7),
-                    height: 95.3,
-                    width: 725
+            ),
+            Container(
+                child: Row(
+                  children: track1,
+
 
                 ),
-                Container(
+                color: Color.fromRGBO(97, 103, 122, 0.7),
+                height: 95.3,
+                width: 725
 
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                        children: track2
+            ),
+            Container(
 
-                    ),
+                child: Row(
 
-                    height: 95.3,
-                    width: 725,
+                  children: track2,
+
+                ),
+
+                height: 95.3,
+                width: 725,
     decoration: BoxDecoration(border: Border(
         top: BorderSide(width: 5, color: Color.fromRGBO(39, 40,41, 0.8)),
 
@@ -452,32 +517,32 @@ class dawPageState extends State<dawpage> {
 
     color: Color.fromRGBO(97, 103, 122, 0.7),
     ),
-                ),
-                Container(
-
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-
-
-
-                  ),
-
-                  height: 95.3,
-                  width: 725,
-                  decoration: BoxDecoration(border: Border(
-                    top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8)),
-
-                  ),
-
-                      color: Color.fromRGBO(97, 103, 122, 0.7),
-                  ),
-                )
-              ]
             ),
+            Container(
 
-              height: 500,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+
+
+
+              ),
+
+              height: 95.3,
               width: 725,
-          ),
+              decoration: BoxDecoration(border: Border(
+                top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8)),
+
+              ),
+
+                  color: Color.fromRGBO(97, 103, 122, 0.7),
+              ),
+            )
+          ]
+            ), //tracklist
+
+            height: 500,
+
+            ),
         ]
       )
        // This trailing comma makes auto-formatting nicer for build methods.

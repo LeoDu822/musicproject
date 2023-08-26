@@ -27,7 +27,7 @@ class sessionPageState extends State<sessionpage> {
     return Scaffold(
       appBar: AppBar(
 
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Color.fromRGBO(122, 122, 150, 0.7),
 
         title: Text(widget.title),
       ),
@@ -41,12 +41,12 @@ class sessionPageState extends State<sessionpage> {
                          decoration: const BoxDecoration(
 
                              border: Border(
-                               top: BorderSide(color: Colors.white, width: 5),
-                               left: BorderSide(color: Colors.white, width: 5),
-                               right: BorderSide(color: Colors.white, width: 2.5),
-                               bottom: BorderSide(color: Colors.white, width: 2.5),
+                               top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                               left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                               right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                               bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
                              ),
-                             color: Colors.yellow
+                             color: Color.fromRGBO(122, 122, 150, 1)
                          ),
                        width: 304.4,
                        height: 157.7,
@@ -56,12 +56,12 @@ class sessionPageState extends State<sessionpage> {
                          decoration: const BoxDecoration(
 
                              border: Border(
-                               top: BorderSide(color: Colors.white, width: 5),
-                               left: BorderSide(color: Colors.white, width: 2.5),
-                               right: BorderSide(color: Colors.white, width: 2.5),
-                               bottom: BorderSide(color: Colors.white, width: 2.5),
+                               top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                               left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                               right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                               bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
                              ),
-                             color: Colors.green
+                             color: Color.fromRGBO(122, 122, 150, 1)
                          ),
                          width: 304.4,
                          height: 157.7,
@@ -71,12 +71,12 @@ class sessionPageState extends State<sessionpage> {
                          decoration: const BoxDecoration(
 
                              border: Border(
-                               top: BorderSide(color: Colors.white, width: 5),
-                               left: BorderSide(color: Colors.white, width: 2.5),
-                               right: BorderSide(color: Colors.white, width: 5),
-                               bottom: BorderSide(color: Colors.white, width: 2.5),
+                               top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                               left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                               right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                               bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
                              ),
-                             color: Colors.blue
+                             color: Color.fromRGBO(122, 122, 150, 1)
                          ),
                          width: 304.4,
                          height: 157.7,
@@ -90,12 +90,12 @@ class sessionPageState extends State<sessionpage> {
                      decoration: const BoxDecoration(
 
                          border: Border(
-                           top: BorderSide(color: Colors.white, width: 2.5),
-                           left: BorderSide(color: Colors.white, width: 5),
-                           right: BorderSide(color: Colors.white, width: 2.5),
-                           bottom: BorderSide(color: Colors.white, width: 5),
+                           top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                           left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                           right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                           bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
                          ),
-                         color: Colors.black
+                         color: Color.fromRGBO(122, 122, 150, 1)
                      ),
                        width: 304.4,
                        height: 157.7,
@@ -105,12 +105,12 @@ class sessionPageState extends State<sessionpage> {
                        decoration: const BoxDecoration(
 
                            border: Border(
-                             top: BorderSide(color: Colors.white, width: 2.5),
-                             left: BorderSide(color: Colors.white, width: 2.5),
-                             right: BorderSide(color: Colors.white, width: 2.5),
-                             bottom: BorderSide(color: Colors.white, width: 5),
+                             top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                             left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                             right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                             bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
                            ),
-                           color: Colors.grey
+                           color: Color.fromRGBO(122, 122, 150, 1)
                        ),
                        width: 304.4,
                        height: 157.7,
@@ -120,12 +120,12 @@ class sessionPageState extends State<sessionpage> {
                        decoration: const BoxDecoration(
 
                            border: Border(
-                             top: BorderSide(color: Colors.white, width: 2.5),
-                             left: BorderSide(color: Colors.white, width: 2.5),
-                             right: BorderSide(color: Colors.white, width: 5),
-                             bottom: BorderSide(color: Colors.white, width: 5),
+                             top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                             left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                             right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                             bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
                            ),
-                           color: Colors.red
+                           color: Color.fromRGBO(122, 122, 150, 1)
                        ),
                        width: 304.4,
                        height: 157.7,
