@@ -67,12 +67,12 @@ List <Widget> chordbuttons = [];
       if (r.statusCode == 200) {
         print(r.stream.bytesToString().then((value) {
           print(jsonDecode(value));
-          for (var i in jsonDecode(value))
+          for (var i in jsonDecode(value).entries)
             {
-              for (var x in i) {
+              for (int x = 0; x <i.value.length; x++) {
                 chordbuttons.add(ElevatedButton(onPressed: () {
                   //print("Hello");
-                }, child: Text(x)));
+                }, child: Text(i.value[x])));
               }
             }
         }));
