@@ -26,7 +26,16 @@ class chordPageState extends State<chordpage> {
   int _counter = 0;
   File? _selectedFile;
   chordPageState(this._selectedFile){
+
     _uploadFileChord();
+    for (var i in fullchords.entries)
+    {
+      for (int x = 0; x <i.value.length; x++) {
+        chordbuttons.add(ElevatedButton(onPressed: () {
+          //print("Hello");
+        }, child: Text(i.value[x])));
+      }
+    }
   }
   void nextPage(){
     Navigator.push(
@@ -42,6 +51,7 @@ class chordPageState extends State<chordpage> {
       _counter+=2;
     });
   }
+  Map <String, dynamic> fullchords = {};
 List <Widget> chordbuttons = [];
   Future<void> _uploadFileChord() async {
     var url = 'https://priceyconcreteemacs.jackwagner7.repl.co'; // AWS/ec2 host
@@ -67,14 +77,7 @@ List <Widget> chordbuttons = [];
       if (r.statusCode == 200) {
         print(r.stream.bytesToString().then((value) {
           print(jsonDecode(value));
-          for (var i in jsonDecode(value).entries)
-            {
-              for (int x = 0; x <i.value.length; x++) {
-                chordbuttons.add(ElevatedButton(onPressed: () {
-                  //print("Hello");
-                }, child: Text(i.value[x])));
-              }
-            }
+          fullchords = jsonDecode(value);
         }));
       }
     });
