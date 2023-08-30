@@ -32,108 +32,114 @@ class sessionPageState extends State<sessionpage> {
         title: Text(widget.title),
       ),
       body: Center(
-          child: Column(
-             children: [
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                 children: [
 
-                 Row(
-                   children: [
-                     Container(
+                     Row(
+                       children: [
+                         Container(
+                             decoration: const BoxDecoration(
+
+                                 border: Border(
+                                   top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                                   left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                                   right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                                   bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                                 ),
+                                 color: Color.fromRGBO(122, 122, 150, 1)
+                             ),
+                           width: 304.4,
+                           height: 157.7,
+
+                         ),
+                         Container(
+                             decoration: const BoxDecoration(
+
+                                 border: Border(
+                                   top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                                   left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                                   right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                                   bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                                 ),
+                                 color: Color.fromRGBO(122, 122, 150, 1)
+                             ),
+                             width: 304.4,
+                             height: 157.7,
+
+                         ),
+                         Container(
+                             decoration: const BoxDecoration(
+
+                                 border: Border(
+                                   top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                                   left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                                   right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                                   bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                                 ),
+                                 color: Color.fromRGBO(122, 122, 150, 1)
+                             ),
+                             width: 304.4,
+                             height: 157.7,
+
+                         )
+                       ],
+                     ),
+                   Row(
+                     children: [
+                       Container(
                          decoration: const BoxDecoration(
 
                              border: Border(
-                               top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                               top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
                                left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
                                right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                               bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                               bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
                              ),
                              color: Color.fromRGBO(122, 122, 150, 1)
                          ),
-                       width: 304.4,
-                       height: 157.7,
+                           width: 304.4,
+                           height: 157.7,
 
-                     ),
-                     Container(
-                         decoration: const BoxDecoration(
-
-                             border: Border(
-                               top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
-                               left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                               right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                               bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                             ),
-                             color: Color.fromRGBO(122, 122, 150, 1)
-                         ),
-                         width: 304.4,
-                         height: 157.7,
-
-                     ),
-                     Container(
-                         decoration: const BoxDecoration(
-
-                             border: Border(
-                               top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
-                               left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                               right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
-                               bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                             ),
-                             color: Color.fromRGBO(122, 122, 150, 1)
-                         ),
-                         width: 304.4,
-                         height: 157.7,
-
-                     )
-                   ],
-                 ),
-               Row(
-                 children: [
-                   Container(
-                     decoration: const BoxDecoration(
-
-                         border: Border(
-                           top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                           left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
-                           right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                           bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
-                         ),
-                         color: Color.fromRGBO(122, 122, 150, 1)
-                     ),
-                       width: 304.4,
-                       height: 157.7,
-
-                   ),
-                   Container(
-                       decoration: const BoxDecoration(
-
-                           border: Border(
-                             top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                             left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                             right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                             bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
-                           ),
-                           color: Color.fromRGBO(122, 122, 150, 1)
                        ),
-                       width: 304.4,
-                       height: 157.7,
+                       Container(
+                           decoration: const BoxDecoration(
 
-                   ),
-                   Container(
-                       decoration: const BoxDecoration(
-
-                           border: Border(
-                             top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                             left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
-                             right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
-                             bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                               border: Border(
+                                 top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                                 left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                                 right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                                 bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                               ),
+                               color: Color.fromRGBO(122, 122, 150, 1)
                            ),
-                           color: Color.fromRGBO(122, 122, 150, 1)
-                       ),
-                       width: 304.4,
-                       height: 157.7,
+                           width: 304.4,
+                           height: 157.7,
 
+                       ),
+                       Container(
+                           decoration: const BoxDecoration(
+
+                               border: Border(
+                                 top: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                                 left: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 2.5),
+                                 right: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                                 bottom: BorderSide(color: Color.fromRGBO(39, 40,41, 0.8), width: 5),
+                               ),
+                               color: Color.fromRGBO(122, 122, 150, 1)
+                           ),
+                           width: 304.4,
+                           height: 157.7,
+
+                       )
+                     ],
                    )
-                 ],
-               )
-          ]
+              ]
+              ),
+            ),
           )
 
 

@@ -248,156 +248,134 @@ class dawPageState extends State<dawpage> {
       drawer: Container(
         width: 350,
         child: Drawer(
-          child: Column(
-            children: [
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 25, 8, 8),
-                  child: Column(
-                    children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 25, 8, 8),
+                    child: Column(
+                      children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
 
-                            ElevatedButton(
-                              onPressed: nextpagemelody,
-                              child: Text("Saved melodies"),
-                            ),
-
-                            ElevatedButton(
-                              onPressed: (){
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => UploadPage()),
-
-                                );
-                              },
-
-                              child: Text("Upload"),
-                            )
-                          ]
-                      ),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(width: 5),
-                                borderRadius: BorderRadius.circular(12),
-                                color: Color.fromRGBO(39, 40,41, 0.8),
+                              ElevatedButton(
+                                onPressed: nextpagemelody,
+                                child: Text("Saved melodies"),
                               ),
-                              margin: EdgeInsets.fromLTRB(0, 13, 0, 10),
-                              height:100,
-                              width: 200,
-                            )
-                          ]
-                      ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
 
-                            ButtonTheme(
-                              minWidth: 50,
-                              height: 50,
-                              child: ElevatedButton(
+                              ElevatedButton(
                                 onPressed: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => UploadPage()),
 
-                                  nextpage();
+                                  );
                                 },
-                                child: Text("Chords"),
 
-                              ),
-                            ),
-
-                            ElevatedButton(
-                              onPressed: _incrementCounter,
-                              child: Text("Track 1"),
-                            ),
-                            ElevatedButton(
-                              onPressed: addDragable,
-                              child: Text("Track 2"),
-                            ),
-                          ]
-                      ),
-                    ],
-                  ),
-                ),
-                color: Colors.amber,
-              ),
-              Container(
-                color: Colors.blue,
-                height: 143.3,
-                  width: 400,
-                  child: Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 5),
-                          borderRadius: BorderRadius.circular(12),
-                          color: Color.fromRGBO(39, 40,41, 0.8),
+                                child: Text("Upload"),
+                              )
+                            ]
                         ),
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        height:100,
-                        width: 250,
-                      )
-                    ]
-                  ),
-                ),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
 
-            ],
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 5),
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Color.fromRGBO(39, 40,41, 0.8),
+                                ),
+                                margin: EdgeInsets.fromLTRB(0, 13, 0, 10),
+                                height:100,
+                                width: 200,
+                              )
+                            ]
+                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+
+                              ButtonTheme(
+                                minWidth: 50,
+                                height: 50,
+                                child: ElevatedButton(
+                                  onPressed: (){
+
+                                    nextpage();
+                                  },
+                                  child: Text("Chords"),
+
+                                ),
+                              ),
+
+                              ElevatedButton(
+                                onPressed: _incrementCounter,
+                                child: Text("Track 1"),
+                              ),
+                              ElevatedButton(
+                                onPressed: addDragable,
+                                child: Text("Track 2"),
+                              ),
+                            ]
+                        ),
+                      ],
+                    ),
+                  ),
+                  color: Colors.amber,
+                ),
+                Container(
+                  color: Colors.blue,
+                  height: 143.3,
+                    width: 400,
+                    child: Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 5),
+                            borderRadius: BorderRadius.circular(12),
+                            color: Color.fromRGBO(39, 40,41, 0.8),
+                          ),
+                          margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                          height:100,
+                          width: 250,
+                        )
+                      ]
+                    ),
+                  ),
+
+              ],
+            ),
           )
         ),
       ),
       backgroundColor: Color.fromRGBO(122, 122, 150, 1),
-      body: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 25, 0, 0),
-            child: Container(
+      body: SingleChildScrollView(
 
-              child: Column(
-                  children: [
-                    Container(
-                      color: Colors.blue,
-                      height: 95.3,
-                      width: 180,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 100,
-                            color: Colors.blue
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              if (track1.isNotEmpty) {
-                                _removeWidget(track1.length - 1); // Remove the last widget
-                              }
-                            },
-                            iconSize: 40,
-                            icon: Icon(
-                              Icons.restore_from_trash_outlined,
-                            ),
-                          )
-                        ]
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 50, 0, 0),
+              child: Container(
 
-                      ),
-
-                    ),
-                    Container(
-
+                child: Column(
+                    children: [
+                      Container(
+                        color: Colors.blue,
                         height: 95.3,
                         width: 180,
-                      child: Row(
+                        child: Row(
                           children: [
                             Container(
-                                width: 100,
-                                color: Colors.red
+                              width: 100,
+                              color: Colors.blue
                             ),
                             IconButton(
                               onPressed: () {
-                                if (track2.isNotEmpty) {
-                                  _removeWidget2(track2.length - 1); // Remove the last widget
+                                if (track1.isNotEmpty) {
+                                  _removeWidget(track1.length - 1); // Remove the last widget
                                 }
                               },
                               iconSize: 40,
@@ -407,143 +385,174 @@ class dawPageState extends State<dawpage> {
                             )
                           ]
 
+                        ),
+
                       ),
+                      Container(
+
+                          height: 95.3,
+                          width: 180,
+                        child: Row(
+                            children: [
+                              Container(
+                                  width: 100,
+                                  color: Colors.red
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  if (track2.isNotEmpty) {
+                                    _removeWidget2(track2.length - 1); // Remove the last widget
+                                  }
+                                },
+                                iconSize: 40,
+                                icon: Icon(
+                                  Icons.restore_from_trash_outlined,
+                                ),
+                              )
+                            ]
+
+                        ),
+                          decoration: BoxDecoration(border: Border(
+
+                      top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+
+              ),
+
+          color: Colors.red
+    ),
+                      ),
+                      Container(
+
+                        height: 95.3,
+                        width: 180,
+                        child: Row(
+                            children: [
+                              Container(
+                                  width: 100,
+                                  color: Colors.amber
+                              ),
+                              IconButton(
+                                onPressed: _incrementCounter,
+                                iconSize: 40,
+                                icon: Icon(
+                                  Icons.restore_from_trash_outlined,
+                                ),
+                              )
+                            ]
+
+                        ),
                         decoration: BoxDecoration(border: Border(
 
-                    top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+                            top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
 
-            ),
+                        ),
 
-        color: Colors.red
-    ),
-                    ),
-                    Container(
-
-                      height: 95.3,
-                      width: 180,
-                      child: Row(
-                          children: [
-                            Container(
-                                width: 100,
-                                color: Colors.amber
-                            ),
-                            IconButton(
-                              onPressed: _incrementCounter,
-                              iconSize: 40,
-                              icon: Icon(
-                                Icons.restore_from_trash_outlined,
-                              ),
-                            )
-                          ]
-
+                            color: Colors.amber
+                        ),
                       ),
-                      decoration: BoxDecoration(border: Border(
+                    ]
+                  ),
 
-                          top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+                decoration: BoxDecoration(border: Border(
+                  top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+                  left: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+                  bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
 
-                      ),
-
-                          color: Colors.amber
-                      ),
-                    ),
-                  ]
                 ),
 
-              decoration: BoxDecoration(border: Border(
-                top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
-                left: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
-                bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
 
+                ),
+
+                height: 500,
+                width: 180,
               ),
-
-
-              ),
-
-              height: 500,
-              width: 180,
             ),
-          ),
-          Container(
-          decoration: BoxDecoration(border: Border.all(
-              width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)
-          ),
-              borderRadius: BorderRadius.circular(2)
-
-          ),
-          width: 725,
-          child: Column(
-          children: [
             Container(
-              child: Row(
+            decoration: BoxDecoration(border: Border.all(
+                width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)
+            ),
+                borderRadius: BorderRadius.circular(2)
+
+            ),
+            width: 380,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+
+              children: [
+                Container(
+                  child: Row(
 
 
-              ),
-                height: 25,
-                width: 725,
+                  ),
+                    height: 25,
+                    width: 380,
     decoration: BoxDecoration(border: Border(
-      bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8))
+        bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8))
     ),
 
-        color: Color.fromRGBO(39, 40,41, 0.8)
+          color: Color.fromRGBO(39, 40,41, 0.8)
     ),
 
-            ),
-            Container(
-                child: Row(
-                  children: track1,
+                ),
+                Container(
+                    child: Row(
+                      children: track1,
 
+
+                    ),
+                    color: Color.fromRGBO(97, 103, 122, 0.7),
+                    height: 95.3,
+                    width: 380
 
                 ),
-                color: Color.fromRGBO(97, 103, 122, 0.7),
-                height: 95.3,
-                width: 725
+                Container(
 
-            ),
-            Container(
+                    child: Row(
 
-                child: Row(
+                      children: track2,
 
-                  children: track2,
+                    ),
 
-                ),
-
-                height: 95.3,
-                width: 725,
+                    height: 95.3,
+                    width: 380,
     decoration: BoxDecoration(border: Border(
-        top: BorderSide(width: 5, color: Color.fromRGBO(39, 40,41, 0.8)),
+          top: BorderSide(width: 5, color: Color.fromRGBO(39, 40,41, 0.8)),
 
 
     ),
 
     color: Color.fromRGBO(97, 103, 122, 0.7),
     ),
-            ),
-            Container(
+                ),
+                Container(
 
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
 
 
 
-              ),
+                  ),
 
-              height: 95.3,
-              width: 725,
-              decoration: BoxDecoration(border: Border(
-                top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8)),
+                  height: 95.3,
+                  width: 380,
+                  decoration: BoxDecoration(border: Border(
+                    top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8)),
 
-              ),
+                  ),
 
-                  color: Color.fromRGBO(97, 103, 122, 0.7),
-              ),
-            )
-          ]
+                      color: Color.fromRGBO(97, 103, 122, 0.7),
+                  ),
+                )
+              ]
+                ),
             ), //tracklist
 
-            height: 500,
+              height: 500,
 
-            ),
-        ]
+              ),
+          ]
+        ),
       )
        // This trailing comma makes auto-formatting nicer for build methods.
     );

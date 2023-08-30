@@ -30,8 +30,31 @@ class splashPageState extends State<splashpage> {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/background.jpg"),
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
+
             ),
+            boxShadow: [
+              BoxShadow(
+                  blurRadius: 10,
+                  // bottomLeft
+                  offset: Offset(-1.5, -1.5),
+                  color: Colors.white),
+              BoxShadow(
+                  blurRadius: 10,
+                  // bottomRight
+                  offset: Offset(1.5, -1.5),
+                  color: Colors.white),
+              BoxShadow(
+                  blurRadius: 10,
+                  // topRight
+                  offset: Offset(1.5, 1.5),
+                  color: Colors.white),
+              BoxShadow(
+                  blurRadius: 10,
+                  // topLeft
+                  offset: Offset(-1.5, 1.5),
+                  color: Colors.white),
+            ]
           ),
           child: Center(
             child: Column(
@@ -60,12 +83,33 @@ class splashPageState extends State<splashpage> {
                           offset: Offset(-1.5, 1.5),
                           color: Colors.white),
                     ])),
-                Image.asset("assets/logo-transparent-png.png", height: 245, alignment: Alignment.topCenter),
+                Image.asset("assets/logo-transparent-png.png", height: 175, alignment: Alignment.topCenter),
                 Flexible(
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Text("Tap anywhere to begin",
-                        style: TextStyle(fontSize: 20, color: Colors.white, fontFamily: "Tektur"),
+                        style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: "Tektur", shadows: [
+                          Shadow(
+                              blurRadius: 10,
+                              // bottomLeft
+                              offset: Offset(-1.5, -1.5),
+                              color: Colors.white),
+                          Shadow(
+                              blurRadius: 10,
+                              // bottomRight
+                              offset: Offset(1.5, -1.5),
+                              color: Colors.white),
+                          Shadow(
+                              blurRadius: 10,
+                              // topRight
+                              offset: Offset(1.5, 1.5),
+                              color: Colors.white),
+                          Shadow(
+                              blurRadius: 10,
+                              // topLeft
+                              offset: Offset(-1.5, 1.5),
+                              color: Colors.white),
+                        ]),
                         textAlign: TextAlign.center),
                   ),
                 ),
