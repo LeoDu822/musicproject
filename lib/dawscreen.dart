@@ -106,7 +106,32 @@ class dawPageState extends State<dawpage> {
       }
     });
   }
+  Future<void> _uploadFileChord() async {
+    var url = 'https://priceyconcreteemacs.jackwagner7.repl.co'; // AWS/ec2 host
+    print(url);
+    Map<String, String> headers = {
+      "Connection": "Keep-Alive",
+      "Keep-Alive": "timeout=5, max=1000"
+    };
 
+    http.MultipartRequest request = http.MultipartRequest(
+        'POST', Uri.parse('$url/getAllChords')); //post request to URL/analize
+    request.headers.addAll(headers);
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'file',
+        _selectedFile!.path,
+      ),
+    );
+
+    request.send().then((r) async {
+      print(r.statusCode);
+
+      if (r.statusCode == 200) {
+        print(r.stream.bytesToString());
+      }
+    });
+  }
   Future<Duration?> _getAudioDuration() async {
     player.setSourceDeviceFile(audioFile);
 
@@ -461,7 +486,7 @@ class dawPageState extends State<dawpage> {
                                 child: ElevatedButton(
                                   onPressed: (){
 
-                                    _uploadFile();
+                                    _uploadFileChord();
                                   },
                                   child: Text("Chords"),
 
