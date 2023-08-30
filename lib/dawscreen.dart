@@ -1,3 +1,4 @@
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -10,6 +11,10 @@ import 'package:musicproject/widgets.dart';
 import 'SavedMelodies.dart';
 import 'chord.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+
 
 class dawpage extends StatefulWidget {
   const dawpage({super.key, required this.title});
@@ -28,24 +33,119 @@ enum  MenuItem {
 
 class dawPageState extends State<dawpage> {
   final player = AudioPlayer();
+  File? _selectedFile;
+  String audioFile = '';
+  AudioCache audioCache = AudioCache();
   int _counter = 0;
   ScrollController _controller1 = ScrollController();
   ScrollController _controller2 = ScrollController();
   ScrollController _controller3 = ScrollController();
   List<Widget> track1 = [];
   List<Widget> track2 = [];
+  late Map<String, int> track1map;
 
-  Future<void> _selectFile()
-  async {
-    FilePickerResult? Result = await FilePicker.platform.pickFiles(
+  bool uploaded = false;
+  Future<void> _selectFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ["mid"]
+      allowedExtensions: ['mid'],
     );
-    if (Result != null)
-      {
-        print("File received");
-      }
+
+    if (result != null) {
+
+      _selectedFile = File(result.files.single.path!);
+      setState(() {
+        uploaded = true;
+        print(uploaded);
+      });
+
+    }
   }
+
+
+  int fileNumber = 0;
+  Future<void> _uploadFile() async {
+    var url = 'https://priceyconcreteemacs.jackwagner7.repl.co'; // AWS/ec2 host
+    print(url);
+    Map<String, String> headers = {
+      "Connection": "Keep-Alive",
+      "Keep-Alive": "timeout=5, max=1000"
+    };
+
+    http.MultipartRequest request = http.MultipartRequest(
+        'POST', Uri.parse('$url/upload')); //post request to URL/analize
+    request.headers.addAll(headers);
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'file',
+        _selectedFile!.path,
+      ),
+    );
+
+    request.send().then((r) async {
+      print(r.statusCode);
+
+      if (r.statusCode == 200) {
+        // Save audio locally
+        print("sucess?");
+        Directory tempDir = await getTemporaryDirectory();
+        print(tempDir);
+
+        File localAudioFile = File('${tempDir.path}/audio$fileNumber.wav');
+        fileNumber++;
+        await localAudioFile.writeAsBytes(await r.stream.toBytes());
+        setState(() {
+
+          audioFile = localAudioFile.path;
+          
+          print(audioFile);
+          print(player.source);
+          player.setSourceDeviceFile(audioFile);
+          player.resume();
+        });
+      }
+    });
+  }
+
+  Future<Duration?> _getAudioDuration() async {
+    player.setSourceDeviceFile(audioFile);
+
+    Duration? audioDuration = await Future.delayed(
+      Duration(seconds: 2),
+          () => player.getDuration(),
+    );
+
+    return audioDuration;
+  }
+
+
+  Widget getLocalFileDuration() {
+    return FutureBuilder<Duration?>(
+      future: _getAudioDuration(),
+      builder: (BuildContext context, AsyncSnapshot<Duration?> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return Text('No Connection...');
+          case ConnectionState.active:
+          case ConnectionState.waiting:
+            return Text('Waiting...');
+          case ConnectionState.done:
+            if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+            return Text(snapshot.data.toString());
+        }
+      },
+    );
+  }
+
+  int getTimeString(int milliseconds) {
+    if (milliseconds == null) milliseconds = 0;
+    String minutes =
+        '${(milliseconds / 60000).floor() < 10 ? 0 : ''}${(milliseconds / 60000).floor()}';
+    String seconds =
+        '${(milliseconds / 1000).floor() % 60 < 10 ? 0 : ''}${(milliseconds / 1000).floor() % 60}';
+    return milliseconds; // Returns a string with the format mm:ss
+  }
+
   void _scrollListener() {
     print("hello");
     if (_controller1.position.userScrollDirection == ScrollDirection.forward) {
@@ -152,6 +252,67 @@ class dawPageState extends State<dawpage> {
     });
 
   }
+
+  int _timerDuration = 5000; // Example: 60 seconds
+
+  // Variable to hold the current time remaining
+  int _currentTime = 0;
+
+  // Timer object
+  Timer? _timer;
+
+  // Function to be executed when the timer expires
+  void _onTimerComplete() {
+    // Implement actions to perform when the timer expires
+    print("Timer complete!");
+  }
+
+  // Function to start the timer
+  void _startTimer() {
+    // Initialize the timer with the specified duration
+    // Save audio locally
+    int i = 0;
+    int previoustime = 0;
+
+    setState(() {
+      audioFile = track1map.keys.elementAt(i);
+      player.setSourceDeviceFile(audioFile);
+      player.resume();
+    });
+    //previoustime = track1map.key.elementAt(i);
+    _timer = Timer.periodic(Duration(milliseconds: 100), (Timer timer) {
+      // Update the time remaining
+      print("Hello");
+      setState(() {
+        _currentTime = _timerDuration - timer.tick;
+        
+        if (_currentTime > previoustime + track1map.values.elementAt(i)) {
+          //play the sound
+          previoustime = track1map.values.elementAt(i) + previoustime;
+          i++;
+        }
+      });
+
+
+
+      // Check if the timer has completed
+      if (timer.tick >= _timerDuration) {
+        timer.cancel(); // Cancel the timer
+        _onTimerComplete(); // Execute the timer completion function
+      }
+    });
+  }
+
+  // Function to stop the timer
+  void _stopTimer() {
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
+      setState(() {
+        _currentTime = 0;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -267,11 +428,7 @@ class dawPageState extends State<dawpage> {
 
                               ElevatedButton(
                                 onPressed: (){
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => UploadPage()),
-
-                                  );
+                                  _selectFile();
                                 },
 
                                 child: Text("Upload"),
@@ -304,7 +461,7 @@ class dawPageState extends State<dawpage> {
                                 child: ElevatedButton(
                                   onPressed: (){
 
-                                    nextpage();
+                                    _uploadFile();
                                   },
                                   child: Text("Chords"),
 
