@@ -128,7 +128,9 @@ class dawPageState extends State<dawpage> {
       print(r.statusCode);
 
       if (r.statusCode == 200) {
-        print(r.stream.bytesToString());
+        print(r.stream.bytesToString().then((value) {
+          print(value);
+        }));
       }
     });
   }
@@ -210,7 +212,7 @@ class dawPageState extends State<dawpage> {
   void nextpage(){
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => chordpage(title: "daw screen")),
+      MaterialPageRoute(builder: (context) => chordpage(_selectedFile, "chord Screen")),
 
     );
   }

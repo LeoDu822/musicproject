@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:musicproject/savedsession.dart';
 
+
+import 'package:flutter/rendering.dart';
+
+import 'dart:async';
+import 'package:http/http.dart' as http;
+
+import 'dart:io';
 import 'dawscreen.dart';
 
 class chordpage extends StatefulWidget {
-  const chordpage({super.key, required this.title});
+  final File? file;
+  chordpage(this.file, this.title);
 
   final String title;
 
   @override
-  State<chordpage> createState() => chordPageState();
+  State<chordpage> createState() => chordPageState(file);
 }
 
 class chordPageState extends State<chordpage> {
   int _counter = 0;
+  File? _selectedFile;
+  chordPageState(this._selectedFile);
   void nextPage(){
     Navigator.push(
       context,
@@ -28,6 +38,36 @@ class chordPageState extends State<chordpage> {
       _counter+=2;
     });
   }
+
+  Future<void> _uploadFileChord() async {
+    var url = 'https://priceyconcreteemacs.jackwagner7.repl.co'; // AWS/ec2 host
+    print(url);
+    Map<String, String> headers = {
+      "Connection": "Keep-Alive",
+      "Keep-Alive": "timeout=5, max=1000"
+    };
+
+    http.MultipartRequest request = http.MultipartRequest(
+        'POST', Uri.parse('$url/getAllChords')); //post request to URL/analize
+    request.headers.addAll(headers);
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'file',
+        _selectedFile!.path,
+      ),
+    );
+
+    request.send().then((r) async {
+      print(r.statusCode);
+
+      if (r.statusCode == 200) {
+        print(r.stream.bytesToString().then((value) {
+          print(value);
+        }));
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
