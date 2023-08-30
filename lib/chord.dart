@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:musicproject/savedsession.dart';
 
@@ -23,7 +25,9 @@ class chordpage extends StatefulWidget {
 class chordPageState extends State<chordpage> {
   int _counter = 0;
   File? _selectedFile;
-  chordPageState(this._selectedFile);
+  chordPageState(this._selectedFile){
+    _uploadFileChord();
+  }
   void nextPage(){
     Navigator.push(
       context,
@@ -38,7 +42,7 @@ class chordPageState extends State<chordpage> {
       _counter+=2;
     });
   }
-
+List <Widget> chordbuttons = [];
   Future<void> _uploadFileChord() async {
     var url = 'https://priceyconcreteemacs.jackwagner7.repl.co'; // AWS/ec2 host
     print(url);
@@ -62,7 +66,15 @@ class chordPageState extends State<chordpage> {
 
       if (r.statusCode == 200) {
         print(r.stream.bytesToString().then((value) {
-          print(value);
+          print(jsonDecode(value));
+          for (var i in jsonDecode(value))
+            {
+              for (var x in i) {
+                chordbuttons.add(ElevatedButton(onPressed: () {
+                  //print("Hello");
+                }, child: Text(x)));
+              }
+            }
         }));
       }
     });
@@ -103,18 +115,7 @@ class chordPageState extends State<chordpage> {
               padding: const EdgeInsets.all(20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                      onPressed: _incrementCounter, child: Text("chord")),
-                  ElevatedButton(
-                      onPressed: _incrementCounter, child: Text("chord")),
-                  ElevatedButton(
-                      onPressed: _incrementCounter, child: Text("chord")),
-
-                  ElevatedButton(
-                  onPressed: _incrementCounter, child: Text("chord")),
-
-          ]
+                children: chordbuttons
 
               ),
 

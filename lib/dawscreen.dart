@@ -488,7 +488,11 @@ class dawPageState extends State<dawpage> {
                                 child: ElevatedButton(
                                   onPressed: (){
 
-                                    _uploadFileChord();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => chordpage(_selectedFile, "chordspage")),
+
+                                    );
                                   },
                                   child: Text("Chords"),
 
