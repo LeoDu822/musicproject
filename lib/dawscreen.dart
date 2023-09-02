@@ -44,6 +44,15 @@ class dawPageState extends State<dawpage> {
   List<Widget> track2 = [];
   late Map<String, int> track1map;
 
+  void _resetState() {
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _selectedFile = null;
+    });
+  }
+
   bool uploaded = false;
   Future<void> _selectFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(

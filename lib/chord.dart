@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:musicproject/savedsession.dart';
 
@@ -8,6 +9,7 @@ import 'package:flutter/rendering.dart';
 
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 import 'dart:io';
 import 'dawscreen.dart';
@@ -23,7 +25,8 @@ class chordpage extends StatefulWidget {
 }
 
 class chordPageState extends State<chordpage> {
-  int _counter = 0;
+  int _counter = 1;
+  int finalChordLength = 0;
   File? _selectedFile;
   Map <String, dynamic> fullchords = {};
   List <Widget> chordbuttons = [];
@@ -44,15 +47,59 @@ class chordPageState extends State<chordpage> {
       MaterialPageRoute(builder: (context) => dawpage(title: "Saved Sessions")),
     );
   }
-  void _incrementCounter() {
-    setState(() {
-      SelectChord();
-      _counter+=1;
-    });
-  }
 
 
   int chordselect = 0;
+
+
+  Future<void> fetchChord() async {
+    await http.get(Uri.parse('https://leodubackendmusicproject.jackwagner7.repl.co/selectChords/$chordselect/$_counter'));
+  }
+
+  final player = AudioPlayer();
+  String audioFile = '';
+  AudioCache audioCache = AudioCache();
+
+
+  Future<void> fetchFile2() async {
+    await http.get(Uri.parse('https://leodubackendmusicproject.jackwagner7.repl.co/finalizeChord')).then((r) async{
+      print(r.statusCode);
+
+      if (r.statusCode == 200) {
+        // Save audio locally
+        print("success");
+        Directory tempDir = await getTemporaryDirectory();
+        print(tempDir);
+        File localAudioFile = File('${tempDir.path}/audio.wav');
+
+        await localAudioFile.writeAsBytes(await r.bodyBytes);
+
+      setState(() {
+      audioFile = localAudioFile.path;
+      print(audioFile);
+      print(player.source);
+      player.setSourceDeviceFile(audioFile);
+      player.resume();
+      });
+    }
+    });
+  }
+
+  Future<void> fetchFile() async {
+      http.MultipartRequest request = http.MultipartRequest(
+        'GET', Uri.parse('https://leodubackendmusicproject.jackwagner7.repl.co/selectChords/finalizeChord')); //post request to URL/analize
+    Map<String, String> headers = {
+      "Connection": "Keep-Alive",
+      "Keep-Alive": "timeout=5, max=1000"
+    };
+
+    request.headers.addAll(headers);
+
+    request.send().then((r) async {
+
+    });
+  }
+
 
 
   Future<void> SelectChord() async {
@@ -63,6 +110,7 @@ class chordPageState extends State<chordpage> {
       "Connection": "Keep-Alive",
       "Keep-Alive": "timeout=5, max=1000"
     };
+
 
     http.MultipartRequest request = http.MultipartRequest(
         'POST', Uri.parse('$url/selectChords/$chordselect/$_counter')); //post request to URL/analize
@@ -122,17 +170,53 @@ class chordPageState extends State<chordpage> {
     });
   }
 
+  void _incrementCounter() {
+    setState(() {
+      if (_counter == finalChordLength+1) {
+        _counter+=1;
+
+      }
+      if (_counter <= finalChordLength) {
+        fetchChord();
+        _counter+=1;
+        chordbuttons.clear();
+      }
+      if (_counter == finalChordLength+2) {
+        fetchFile2();
+
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => dawpage(title: "dawpage")),
+        //
+        // );
+      }
+    });
+  }
 
   void refreshChordButtons() {
-    for (var i in fullchords.entries) {
-      for (int x = 0; x < i.value.length; x++) {
-        chordbuttons.add(ElevatedButton(onPressed: () {
+    print(_counter);
+    if (fullchords.entries.elementAt(1) != null) {
+      finalChordLength = fullchords.entries.length;
+      if (finalChordLength >= _counter) {
+        print(_counter);
+        print(fullchords.entries.elementAt(0).value);
+        List<dynamic> i = fullchords.entries.elementAt(_counter-1).value;
+        print(i);
+        for (int x = 0; x < i.length; x++) {
+          chordbuttons.add(ElevatedButton(onPressed: () {
 
-          chordselect = x;
-          print(chordselect);
-        }, child: Text(i.value[x])));
+            chordselect = x;
+            print(chordselect);
+          }, child: Text(i.elementAt(x))));
+        }
+        print(fullchords.entries);
       }
+
     }
+
+    // for (var i in fullchords.entries) {
+
+   // }
   }
 
 
