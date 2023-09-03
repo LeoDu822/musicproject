@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -17,12 +18,13 @@ import 'package:http/http.dart' as http;
 
 
 class dawpage extends StatefulWidget {
-  const dawpage({super.key, required this.title});
+  const dawpage(this.title, this.fromChords);
 
   final String title;
+  final bool fromChords;
 
   @override
-  State<dawpage> createState() => dawPageState();
+  State<dawpage> createState() => dawPageState(title, fromChords);
 }
 
 enum  MenuItem {
@@ -32,7 +34,11 @@ enum  MenuItem {
 }
 
 class dawPageState extends State<dawpage> {
-  final player = AudioPlayer();
+  String passedInURL = "";
+  bool fromChords = false;
+  dawPageState(this.passedInURL, this.fromChords);
+  var player = AudioPlayer();
+  final playerTrack2 = AudioPlayer();
   File? _selectedFile;
   String audioFile = '';
   AudioCache audioCache = AudioCache();
@@ -42,7 +48,10 @@ class dawPageState extends State<dawpage> {
   ScrollController _controller3 = ScrollController();
   List<Widget> track1 = [];
   List<Widget> track2 = [];
-  late Map<String, int> track1map;
+  late Map<String, int> audioFilesandDurationMap = {};
+  late Map<String, int> track1map = {};
+  late Map<String, int> track2map = {};
+  String currentLocalFile = "";
 
   void _resetState() {
     if (!mounted) {
@@ -63,10 +72,94 @@ class dawPageState extends State<dawpage> {
     if (result != null) {
 
       _selectedFile = File(result.files.single.path!);
+      await _getAudioDuration1(_selectedFile!.path).then((value) {
+
+        // audioFilesandDurationMap[_selectedFile!.path] = value!.inMilliseconds;
+        print(value);
+      });
+      print(audioFilesandDurationMap);
+
+      var url = 'https://newalgorithm.thechosenonech1.repl.co'; // AWS/ec2 host
+
+      Map<String, String> headers = {
+        "Connection": "Keep-Alive",
+        "Keep-Alive": "timeout=5, max=1000"
+      };
+
+
+
+
+
+      //CONVERTING TO WAV FILE
+      http.MultipartRequest request = http.MultipartRequest(
+          'POST', Uri.parse('$url/convertToWav')); //post request to URL/analize
+      request.headers.addAll(headers);
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'file',
+          _selectedFile!.path,
+        ),
+      );
+
+
+
+      request.send().then((r) async {
+        Directory tempDir = await getTemporaryDirectory();
+        print(tempDir);
+
+
+        File localAudioFile = File('${tempDir.path}/audio$fileNumber.wav');
+        fileNumber++;
+        await localAudioFile.writeAsBytes(await r.stream.toBytes());
+
+        // Save audio locally
+
+        // _selectedFile = File(result.files.single.path!);
+      //  await localAudioFile.writeAsBytes(await r.stream.toBytes());
+
+        await _getAudioDuration1(localAudioFile.path).then((value) {
+          print(value!.inMilliseconds);
+          currentLocalFile = localAudioFile.path;
+          audioFilesandDurationMap[localAudioFile.path] = value!.inMilliseconds;
+          print(audioFilesandDurationMap);
+
+        });
+        setState(() {
+
+          audioFile = localAudioFile.path;
+
+          print(audioFile);
+          print(player.source);
+          player.setSourceDeviceFile(audioFile);
+          player.resume();
+        });
+
+
+
+        // await _selectedFile?.writeAsBytes(await r.stream.toBytes());
+        // audioFile = _selectedFile!.path;
+        // await _getAudioDuration1(audioFile).then((value) {
+        //   print(value!.inMilliseconds);
+        //   audioFilesandDurationMap[_selectedFile!.path] = value!.inMilliseconds;
+        // });
+        // setState(() {
+        //   audioFile = localAudioFile.path;
+        //   print(audioFile);
+        //   print(player.source);
+        //   player.setSourceDeviceFile(audioFile);
+        //
+        //   player.resume();
+        // });
+      });
+
+
+
       setState(() {
         uploaded = true;
         print(uploaded);
       });
+
+
 
     }
   }
@@ -104,7 +197,6 @@ class dawPageState extends State<dawpage> {
         fileNumber++;
         await localAudioFile.writeAsBytes(await r.stream.toBytes());
         setState(() {
-
           audioFile = localAudioFile.path;
           
           print(audioFile);
@@ -154,6 +246,17 @@ class dawPageState extends State<dawpage> {
     return audioDuration;
   }
 
+  Future<Duration?> _getAudioDuration1(String AF) async {
+    player.setSourceDeviceFile(AF);
+
+    Duration? audioDuration = await Future.delayed(
+      Duration(seconds: 2),
+          () => player.getDuration(),
+    );
+    return audioDuration;
+  }
+
+
 
   Widget getLocalFileDuration() {
     return FutureBuilder<Duration?>(
@@ -167,7 +270,12 @@ class dawPageState extends State<dawpage> {
             return Text('Waiting...');
           case ConnectionState.done:
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-            return Text(snapshot.data.toString());
+            if (snapshot.data.toString() == "null") {
+              return Text("");
+            }
+            else {
+              return Text(  snapshot.data.toString());
+            }
         }
       },
     );
@@ -179,6 +287,7 @@ class dawPageState extends State<dawpage> {
         '${(milliseconds / 60000).floor() < 10 ? 0 : ''}${(milliseconds / 60000).floor()}';
     String seconds =
         '${(milliseconds / 1000).floor() % 60 < 10 ? 0 : ''}${(milliseconds / 1000).floor() % 60}';
+    print("THIS IS THE MILISENDONS" + milliseconds.toString());
     return milliseconds; // Returns a string with the format mm:ss
   }
 
@@ -207,10 +316,20 @@ class dawPageState extends State<dawpage> {
   }
   void playsound()
   {
+    if (fromChords == true) {
+      player.setSourceDeviceFile(passedInURL);
+      player.resume();
+    }
+    else {
+      player.setSourceDeviceFile(currentLocalFile);
+      player.resume();
+    }
 
-    print("Hello");
-    player.play(AssetSource('intro.wav'));
-    player.resume();
+   // _startTimer();
+  }
+
+  void stopSound() {
+    player.stop();
   }
   void nextPage(){
     Navigator.push(
@@ -260,14 +379,19 @@ class dawPageState extends State<dawpage> {
   }
   void addDragable()
   {
+    track2map[currentLocalFile] = audioFilesandDurationMap[currentLocalFile]!;
+    print(track2map);
+
     setState(() {
       track2.add(dawObject(100));
     });
 
   }
   void _incrementCounter() {
+    track1map[currentLocalFile] = audioFilesandDurationMap[currentLocalFile]!;
 
     print("Hello World");
+    print(track1map);
     setState(() {
 
      track1.add(dawObject(100));
@@ -278,6 +402,9 @@ class dawPageState extends State<dawpage> {
       if (index >= 0 && index < track1.length) {
         track1.removeAt(index);
       }
+      track1map.clear();
+
+
     });
   }
   void _removeWidget2(int index) {
@@ -289,7 +416,7 @@ class dawPageState extends State<dawpage> {
 
   }
 
-  int _timerDuration = 5000; // Example: 60 seconds
+  int _timerDuration = 20000000; // Example: 60 seconds
 
   // Variable to hold the current time remaining
   int _currentTime = 0;
@@ -308,31 +435,56 @@ class dawPageState extends State<dawpage> {
     // Initialize the timer with the specified duration
     // Save audio locally
     int i = 0;
+    int x = 0;
     int previoustime = 0;
+    int previoustime2 = 0;
+
 
     setState(() {
-      audioFile = track1map.keys.elementAt(i);
-      player.setSourceDeviceFile(audioFile);
-      player.resume();
+      if (track1map.values.length > i) {
+        audioFile = track1map.keys.elementAt(i);
+        player.setSourceDeviceFile(track1map.keys.elementAt(i));
+        player.resume();
+      }
+      if (track2map.values.length > x) {
+        audioFile = track2map.keys.elementAt(x);
+        playerTrack2.setSourceDeviceFile(track2map.keys.elementAt(i));
+        playerTrack2.resume();
+      }
+
     });
     //previoustime = track1map.key.elementAt(i);
-    _timer = Timer.periodic(Duration(milliseconds: 100), (Timer timer) {
+    _timer = Timer.periodic(Duration(milliseconds: 1), (Timer timer) {
       // Update the time remaining
-      print("Hello");
       setState(() {
         _currentTime = _timerDuration - timer.tick;
-        
-        if (_currentTime > previoustime + track1map.values.elementAt(i)) {
-          //play the sound
-          previoustime = track1map.values.elementAt(i) + previoustime;
-          i++;
+        print(timer.tick);
+          if (track1map.values.length > i && timer.tick > previoustime + track1map.values.elementAt(i)) {
+            previoustime = track1map.values.elementAt(i)+ previoustime;
+            i++;
+            print(track1map);
+            print(track1map.values.elementAt(i));
+            print(track1map.keys.elementAt(i));
+            player.dispose();
+            player = AudioPlayer();
+            player.setSourceDeviceFile(track1map.keys.elementAt(i));
+            player.resume();
+          }
+        if (track2map.values.length > x && timer.tick > previoustime2 + track2map.values.elementAt(i)) {
+          previoustime2= track2map.values.elementAt(i)+ previoustime2;
+          x++;
+          playerTrack2.setSourceDeviceFile(track2map.keys.elementAt(i));
+          playerTrack2.resume();
         }
-      });
 
+      });
+      print(track1map);
+      print(track2map);
 
 
       // Check if the timer has completed
       if (timer.tick >= _timerDuration) {
+        print(_timerDuration);
         timer.cancel(); // Cancel the timer
         _onTimerComplete(); // Execute the timer completion function
       }
@@ -378,7 +530,7 @@ class dawPageState extends State<dawpage> {
                 iconSize: 40,
                 onPressed: ()
                 {
-                  stoppage();
+                  stopSound();
                 },
               ),
               IconButton(
@@ -484,6 +636,7 @@ class dawPageState extends State<dawpage> {
                                 margin: EdgeInsets.fromLTRB(0, 13, 0, 10),
                                 height:100,
                                 width: 200,
+                                child: getLocalFileDuration()
                               )
                             ]
                         ),
@@ -574,6 +727,7 @@ class dawPageState extends State<dawpage> {
                                 if (track1.isNotEmpty) {
                                   _removeWidget(track1.length - 1); // Remove the last widget
                                 }
+                                track1map.clear();
                               },
                               iconSize: 40,
                               icon: Icon(

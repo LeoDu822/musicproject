@@ -17,7 +17,7 @@ class splashPageState extends State<splashpage> {
   void nextpage(){
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => dawpage(title: "daw screen")),
+      MaterialPageRoute(builder: (context) => dawpage("daw screen", false)),
     );
   }
   @override

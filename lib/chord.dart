@@ -30,6 +30,7 @@ class chordPageState extends State<chordpage> {
   File? _selectedFile;
   Map <String, dynamic> fullchords = {};
   List <Widget> chordbuttons = [];
+  String url = "https://newalgorithm.thechosenonech1.repl.co";
   chordPageState(this._selectedFile){
     _uploadFileChord();
     for (var i in fullchords.entries) {
@@ -41,28 +42,32 @@ class chordPageState extends State<chordpage> {
     }
 
   }
-  void nextPage(){
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => dawpage(title: "Saved Sessions")),
-    );
-  }
 
 
   int chordselect = 0;
 
 
   Future<void> fetchChord() async {
-    await http.get(Uri.parse('https://leodubackendmusicproject.jackwagner7.repl.co/selectChords/$chordselect/$_counter'));
+    await http.get(Uri.parse('$url/selectChords/$chordselect/$_counter'));
   }
 
   final player = AudioPlayer();
   String audioFile = '';
   AudioCache audioCache = AudioCache();
 
+  Future<Duration?> _getAudioDuration1(String AF) async {
+    player.setSourceDeviceFile(AF);
+
+    Duration? audioDuration = await Future.delayed(
+      Duration(seconds: 2),
+          () => player.getDuration(),
+    );
+    return audioDuration;
+  }
+
 
   Future<void> fetchFile2() async {
-    await http.get(Uri.parse('https://leodubackendmusicproject.jackwagner7.repl.co/finalizeChord')).then((r) async{
+    await http.get(Uri.parse('$url/finalizeChord')).then((r) async{
       print(r.statusCode);
 
       if (r.statusCode == 200) {
@@ -77,17 +82,26 @@ class chordPageState extends State<chordpage> {
       setState(() {
       audioFile = localAudioFile.path;
       print(audioFile);
+      _getAudioDuration1(audioFile);
       print(player.source);
-      player.setSourceDeviceFile(audioFile);
-      player.resume();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => dawpage(audioFile, true)),
+      );
+
+      _getAudioDuration1(audioFile).then((value) {
+        print(value?.inMilliseconds);
+      });
       });
     }
     });
   }
 
+
+
   Future<void> fetchFile() async {
       http.MultipartRequest request = http.MultipartRequest(
-        'GET', Uri.parse('https://leodubackendmusicproject.jackwagner7.repl.co/selectChords/finalizeChord')); //post request to URL/analize
+        'GET', Uri.parse('$url/selectChords/finalizeChord')); //post request to URL/analize
     Map<String, String> headers = {
       "Connection": "Keep-Alive",
       "Keep-Alive": "timeout=5, max=1000"
@@ -104,8 +118,6 @@ class chordPageState extends State<chordpage> {
 
   Future<void> SelectChord() async {
     print("hello trying to select a chord");
-    var url = 'https://leodubackendmusicproject.jackwagner7.repl.co'; // AWS/ec2 host
-    print(url);
     Map<String, String> headers = {
       "Connection": "Keep-Alive",
       "Keep-Alive": "timeout=5, max=1000"
@@ -138,8 +150,6 @@ class chordPageState extends State<chordpage> {
 
 
   Future<void> _uploadFileChord() async {
-    var url = 'https://leodubackendmusicproject.jackwagner7.repl.co'; // AWS/ec2 host
-    print(url);
     Map<String, String> headers = {
       "Connection": "Keep-Alive",
       "Keep-Alive": "timeout=5, max=1000"
@@ -195,23 +205,27 @@ class chordPageState extends State<chordpage> {
 
   void refreshChordButtons() {
     print(_counter);
-    if (fullchords.entries.elementAt(1) != null) {
-      finalChordLength = fullchords.entries.length;
-      if (finalChordLength >= _counter) {
-        print(_counter);
-        print(fullchords.entries.elementAt(0).value);
-        List<dynamic> i = fullchords.entries.elementAt(_counter-1).value;
-        print(i);
-        for (int x = 0; x < i.length; x++) {
-          chordbuttons.add(ElevatedButton(onPressed: () {
-
-            chordselect = x;
-            print(chordselect);
-          }, child: Text(i.elementAt(x))));
+    if (fullchords.entries.length > 0) {
+      if (fullchords.entries.elementAt(1) != null) {
+        finalChordLength = fullchords.entries.length;
+        if (finalChordLength >= _counter) {
+          print(_counter);
+          print(fullchords.entries
+              .elementAt(0)
+              .value);
+          List<dynamic> i = fullchords.entries
+              .elementAt(_counter - 1)
+              .value;
+          print(i);
+          for (int x = 0; x < i.length; x++) {
+            chordbuttons.add(ElevatedButton(onPressed: () {
+              chordselect = x;
+              print(chordselect);
+            }, child: Text(i.elementAt(x))));
+          }
+          print(fullchords.entries);
         }
-        print(fullchords.entries);
       }
-
     }
 
     // for (var i in fullchords.entries) {
@@ -224,8 +238,6 @@ class chordPageState extends State<chordpage> {
     print(_selectedFile!.path);
     Map<String, dynamic> snapshot = {};
     print("going here");
-    var url = 'https://leodubackendmusicproject.thechosenonech1.repl.co'; // AWS/ec2 host
-    print(url);
     Map<String, String> headers = {
       "Connection": "Keep-Alive",
       "Keep-Alive": "timeout=5, max=1000"
@@ -347,69 +359,69 @@ class chordPageState extends State<chordpage> {
 
 
             ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                        onPressed: _incrementCounter, child: Text("chord")),
-                    ElevatedButton(
-                        onPressed: _incrementCounter, child: Text("chord")),
-                    ElevatedButton(
-                        onPressed: _incrementCounter, child: Text("chord")),
-
-                    ElevatedButton(
-                        onPressed: _incrementCounter, child: Text("chord")),
-
-                  ]
-
-              ),
-
-
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                        onPressed: _incrementCounter, child: Text("chord")),
-                    ElevatedButton(
-                        onPressed: _incrementCounter, child: Text("chord")),
-                    ElevatedButton(
-                        onPressed: _incrementCounter, child: Text("chord")),
-
-                    ElevatedButton(
-                        onPressed: _incrementCounter, child: Text("chord")),
-
-                  ]
-
-              ),
-
-
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                        onPressed: _incrementCounter, child: Text("chord")),
-                    ElevatedButton(
-                        onPressed: _incrementCounter, child: Text("chord")),
-                    ElevatedButton(
-                        onPressed: _incrementCounter, child: Text("chord")),
-
-                    ElevatedButton(
-                        onPressed: _incrementCounter, child: Text("chord")),
-
-                  ]
-
-              ),
-
-
-            )
+            // Padding(
+            //   padding: const EdgeInsets.all(20.0),
+            //   child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //       children: [
+            //         ElevatedButton(
+            //             onPressed: _incrementCounter, child: Text("chord")),
+            //         ElevatedButton(
+            //             onPressed: _incrementCounter, child: Text("chord")),
+            //         ElevatedButton(
+            //             onPressed: _incrementCounter, child: Text("chord")),
+            //
+            //         ElevatedButton(
+            //             onPressed: _incrementCounter, child: Text("chord")),
+            //
+            //       ]
+            //
+            //   ),
+            //
+            //
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.all(20.0),
+            //   child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //       children: [
+            //         ElevatedButton(
+            //             onPressed: _incrementCounter, child: Text("chord")),
+            //         ElevatedButton(
+            //             onPressed: _incrementCounter, child: Text("chord")),
+            //         ElevatedButton(
+            //             onPressed: _incrementCounter, child: Text("chord")),
+            //
+            //         ElevatedButton(
+            //             onPressed: _incrementCounter, child: Text("chord")),
+            //
+            //       ]
+            //
+            //   ),
+            //
+            //
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.all(20.0),
+            //   child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //       children: [
+            //         ElevatedButton(
+            //             onPressed: _incrementCounter, child: Text("chord")),
+            //         ElevatedButton(
+            //             onPressed: _incrementCounter, child: Text("chord")),
+            //         ElevatedButton(
+            //             onPressed: _incrementCounter, child: Text("chord")),
+            //
+            //         ElevatedButton(
+            //             onPressed: _incrementCounter, child: Text("chord")),
+            //
+            //       ]
+            //
+            //   ),
+            //
+            //
+            // )
           ]
         ),
       ),

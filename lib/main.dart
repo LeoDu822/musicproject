@@ -64,12 +64,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void nextpage(){
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => dawpage(title: "daw screen")),
-    );
-  }
+
 
   void _incrementCounter() {
 
@@ -135,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: nextpage,
+        onPressed: () {},
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
