@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "216809890780",
+    "project_id": "compsmart-f2df0",
+    "storage_bucket": "compsmart-f2df0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216809890780:android:414126e4c66caa20026519",
+        "android_client_info": {
+          "package_name": "com.Leo.CompSmart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkVaQ8yE1lHcQ31mB28Oy882XEMTB4_l0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216809890780:android:434553b2923ec3df026519",
+        "android_client_info": {
+          "package_name": "com.example.musicproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkVaQ8yE1lHcQ31mB28Oy882XEMTB4_l0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

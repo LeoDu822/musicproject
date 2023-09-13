@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'Splash.dart';
 import 'dawscreen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -64,12 +69,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void nextpage(){
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => dawpage(title: "daw screen")),
-    );
-  }
+
 
   void _incrementCounter() {
 
@@ -125,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed:',
             ),
             Text (
-              'Press the button'
+                'Press the button'
             ),
             Text(
               '$_counter',
@@ -135,11 +135,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: nextpage,
+        onPressed: () {},
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
-
