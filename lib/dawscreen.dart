@@ -18,7 +18,7 @@ import 'package:http/http.dart' as http;
 
 
 class dawpage extends StatefulWidget {
-  const dawpage(this.title, this.fromChords);
+  const dawpage(this.title, this.fromChords, this.miliseconds);
 
   final String title;
   final bool fromChords;
