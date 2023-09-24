@@ -95,7 +95,10 @@ class chordPageState extends State<chordpage> {
         
           int miliseconds = 0;
            await _getAudioDuration1(audioFile).then((value) {
-            miliseconds = value?.inMilliseconds;
+             if (value?.inMilliseconds != null) {
+              miliseconds = value.inMilliseconds;
+             }
+            
           });
 
           Navigator.push(
