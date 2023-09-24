@@ -43,7 +43,11 @@ class dawPageState extends State<dawpage> {
   String passedInURL = "";
   String key = "G";
   bool fromChords = false;
-  dawPageState(this.passedInURL, this.fromChords);
+  dawPageState(this.passedInURL, this.fromChords){
+    if (this.fromChords == true) {
+      currentLocalFile = passedInURL;
+    }
+  };
   var player = AudioPlayer();
   final playerTrack2 = AudioPlayer();
   File? _selectedFile;
@@ -64,6 +68,8 @@ class dawPageState extends State<dawpage> {
 
   //Stores the filepath of whatever file you currently have selected
   String currentLocalFile = "";
+
+  
 
   void _resetState() {
     if (!mounted) {
