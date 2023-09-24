@@ -92,7 +92,7 @@ class _LoginState extends State<Login> {
                       .then((result) {
                         if (result == null) {
                           Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) => dawpage('My Home Page', false)));
+                              MaterialPageRoute(builder: (context) => dawpage('My Home Page', false, 0)));
                         }
                         else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
