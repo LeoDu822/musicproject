@@ -22,9 +22,10 @@ class dawpage extends StatefulWidget {
 
   final String title;
   final bool fromChords;
+  final int miliseconds = 0;
 
   @override
-  State<dawpage> createState() => dawPageState(title, fromChords);
+  State<dawpage> createState() => dawPageState(title, fromChords, this.miliseconds);
 }
 
 enum  MenuItem {
@@ -43,9 +44,11 @@ class dawPageState extends State<dawpage> {
   String passedInURL = "";
   String key = "G";
   bool fromChords = false;
-  dawPageState(this.passedInURL, this.fromChords){
+  int miliseconds = 0;
+  dawPageState(this.passedInURL, this.fromChords, this.miliseconds){
     if (this.fromChords == true) {
       currentLocalFile = passedInURL;
+      audioFilesandDurationMap[currentLocalFile] = miliseconds;
     }
   };
   var player = AudioPlayer();
