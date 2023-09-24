@@ -31,10 +31,17 @@ enum  MenuItem {
   item1,
   item2,
   item3,
+  item4,
+  item5,
+  item6,
+  item7,
+  item8,
+  item9,
 }
 
 class dawPageState extends State<dawpage> {
   String passedInURL = "";
+  String key = "G";
   bool fromChords = false;
   dawPageState(this.passedInURL, this.fromChords);
   var player = AudioPlayer();
@@ -49,8 +56,13 @@ class dawPageState extends State<dawpage> {
   List<Widget> track1 = [];
   List<Widget> track2 = [];
   late Map<String, int> audioFilesandDurationMap = {};
+
+  //Key: The string to play-Filepath
+  //Value: the int is the milisecond duration of the file
   late Map<String, int> track1map = {};
   late Map<String, int> track2map = {};
+
+  //Stores the filepath of whatever file you currently have selected
   String currentLocalFile = "";
 
   void _resetState() {
@@ -108,7 +120,7 @@ class dawPageState extends State<dawpage> {
         print(tempDir);
 
 
-        File localAudioFile = File('${tempDir.path}/audio.wav');
+        File localAudioFile = File('${tempDir.path}/audio$fileNumber.wav');
         fileNumber++;
         await localAudioFile.writeAsBytes(await r.stream.toBytes());
 
@@ -116,13 +128,13 @@ class dawPageState extends State<dawpage> {
 
         // _selectedFile = File(result.files.single.path!);
 
-        // await _getAudioDuration1(localAudioFile.path).then((value) {
-        //   print(value!.inMilliseconds);
-        //   currentLocalFile = localAudioFile.path;
-        //   audioFilesandDurationMap[localAudioFile.path] = value!.inMilliseconds;
-        //   print(audioFilesandDurationMap);
-        //
-        // });
+        await _getAudioDuration1(localAudioFile.path).then((value) {
+          print(value!.inMilliseconds);
+          currentLocalFile = localAudioFile.path;
+          audioFilesandDurationMap[localAudioFile.path] = value!.inMilliseconds;
+          print(audioFilesandDurationMap);
+
+        });
         setState(() {
 
           audioFile = localAudioFile.path;
@@ -162,8 +174,6 @@ class dawPageState extends State<dawpage> {
 
     }
   }
-
-
   int fileNumber = 0;
   Future<void> _uploadFile() async {
     var url = 'https://priceyconcreteemacs.jackwagner7.repl.co'; // AWS/ec2 host
@@ -244,7 +254,6 @@ class dawPageState extends State<dawpage> {
 
     return audioDuration;
   }
-
   Future<Duration?> _getAudioDuration1(String AF) async {
     player.setSourceDeviceFile(AF);
 
@@ -254,9 +263,6 @@ class dawPageState extends State<dawpage> {
     );
     return audioDuration;
   }
-
-
-
   Widget getLocalFileDuration() {
     return FutureBuilder<Duration?>(
       future: _getAudioDuration(),
@@ -279,7 +285,6 @@ class dawPageState extends State<dawpage> {
       },
     );
   }
-
   int getTimeString(int milliseconds) {
     if (milliseconds == null) milliseconds = 0;
     String minutes =
@@ -289,7 +294,6 @@ class dawPageState extends State<dawpage> {
     print("THIS IS THE MILISENDONS" + milliseconds.toString());
     return milliseconds; // Returns a string with the format mm:ss
   }
-
   void _scrollListener() {
     print("hello");
     if (_controller1.position.userScrollDirection == ScrollDirection.forward) {
@@ -305,30 +309,31 @@ class dawPageState extends State<dawpage> {
 
     player.setSourceUrl("https://cdn.discordapp.com/attachments/1070956419949535272/1137164260208812062/intro.wav");
   }
-  void stoppage()
-  {
+  void stoppage() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => TimerWidget()),
 
     );
   }
-  void playsound()
-  {
-    if (fromChords == true) {
-      player.setSourceDeviceFile(passedInURL);
-      player.resume();
-    }
-    else {
-      player.setSourceDeviceFile(currentLocalFile);
-      player.resume();
-    }
+  void playsound() {
+    _startTimer();
+    // if (fromChords == true) {
+    //   player.setSourceDeviceFile(passedInURL);
+    //   player.resume();
+    // }
+    // else {
+    //   print("playing from current file");
+    //   setState(() {
+    //     player.setSourceDeviceFile(currentLocalFile);
+    //     player.resume();
+    //   });
+    // }
 
     // _startTimer();
   }
-
   void stopSound() {
-    player.stop();
+    _stopTimer();
   }
   void nextPage(){
     Navigator.push(
@@ -350,12 +355,10 @@ class dawPageState extends State<dawpage> {
 
     );
   }
-  void track1Set(index, value)
-  {
+  void track1Set(index, value){
     track1[index] = value;
   }
-  Widget track1Get(index, direction)
-  {
+  Widget track1Get(index, direction) {
     if (index + direction > track1.length || index + direction < 0)
     {
       return track1[index];
@@ -363,12 +366,10 @@ class dawPageState extends State<dawpage> {
 
     return dawObject(10);
   }
-  void track2Set(index, value)
-  {
+  void track2Set(index, value) {
     track2[index] = value;
   }
-  Widget track2Get(index, direction)
-  {
+  Widget track2Get(index, direction) {
     if (index + direction > track2.length || index + direction < 0)
     {
       return track2[index];
@@ -376,19 +377,51 @@ class dawPageState extends State<dawpage> {
 
     return dawObject(10);
   }
-  void addDragable()
-  {
+
+  List<AudioPlayer> audioPlayersTrack2 = [];
+  List<int> durations2 = [];
+  List<String> filePaths2 = [];
+
+  void addtoTrack2Map() {
     track2map[currentLocalFile] = audioFilesandDurationMap[currentLocalFile]!;
     print(track2map);
+    AudioPlayer test = new AudioPlayer();
+
+    test.setSourceDeviceFile(currentLocalFile);
+
+    durations2.add(audioFilesandDurationMap[currentLocalFile]!);
+    filePaths2.add(currentLocalFile);
+    audioPlayersTrack2.add(test);
 
     setState(() {
       track2.add(dawObject(100));
     });
 
   }
-  void _incrementCounter() {
-    track1map[currentLocalFile] = audioFilesandDurationMap[currentLocalFile]!;
 
+  List<AudioPlayer> audioPlayers = [];
+  List<int> durations = [];
+  List<String> filePaths = [];
+
+  void refreshaudioPlayers(){
+    for (int i  = 0; i < audioPlayers.length; i++){
+      audioPlayers[i].setSourceDeviceFile(filePaths[i]);
+    }
+    for (int x  = 0; x < audioPlayersTrack2.length; x++){
+      audioPlayersTrack2[x].setSourceDeviceFile(filePaths2[x]);
+    }
+  }
+
+  void addtoTrack1Map() {
+
+    track1map[currentLocalFile] = audioFilesandDurationMap[currentLocalFile]!;
+    AudioPlayer test = new AudioPlayer();
+
+    test.setSourceDeviceFile(currentLocalFile);
+    print(track1map);
+    durations.add(audioFilesandDurationMap[currentLocalFile]!);
+    filePaths.add(currentLocalFile);
+    audioPlayers.add(test);
     print("Hello World");
     print(track1map);
     setState(() {
@@ -397,6 +430,7 @@ class dawPageState extends State<dawpage> {
     });
   }
   void _removeWidget(int index) {
+    print(track1map);
     setState(() {
       if (index >= 0 && index < track1.length) {
         track1.removeAt(index);
@@ -411,6 +445,7 @@ class dawPageState extends State<dawpage> {
       if (index >= 0 && index < track2.length) {
         track2.removeAt(index);
       }
+      track2map.clear();
     });
 
   }
@@ -433,22 +468,30 @@ class dawPageState extends State<dawpage> {
   void _startTimer() {
     // Initialize the timer with the specified duration
     // Save audio locally
+
+    //Which melody you are on
     int i = 0;
     int x = 0;
+
+    //Milliseconds of the tracks you past
     int previoustime = 0;
     int previoustime2 = 0;
-
+    print(track1map);
+    print(track2map);
 
     setState(() {
-      if (track1map.values.length > i) {
-        audioFile = track1map.keys.elementAt(i);
-        player.setSourceDeviceFile(track1map.keys.elementAt(i));
-        player.resume();
+      //if there is data
+      //play data
+      if (durations.length > i) {
+        previoustime = durations[i];
+       // audioFile = track1map.keys.elementAt(i);
+       // player.setSourceDeviceFile(track1map.keys.elementAt(i));
+      //  player.resume();
+        audioPlayers[i].resume();
       }
-      if (track2map.values.length > x) {
-        audioFile = track2map.keys.elementAt(x);
-        playerTrack2.setSourceDeviceFile(track2map.keys.elementAt(i));
-        playerTrack2.resume();
+      if (durations2.length > x) {
+        previoustime2 = durations2[x];
+        audioPlayersTrack2[x].resume();
       }
 
     });
@@ -458,25 +501,26 @@ class dawPageState extends State<dawpage> {
       setState(() {
         _currentTime = _timerDuration - timer.tick;
         print(timer.tick);
-        if (track1map.values.length > i && timer.tick > previoustime + track1map.values.elementAt(i)) {
-          previoustime = track1map.values.elementAt(i)+ previoustime;
+        //if we have data left and the current time is greater then the previous time
+        if (durations.length > i+1 && (timer.tick > previoustime && timer.tick < previoustime+100)) {
+          //play the next track
+
+          //first add the pervious track time to the previoustime variable
+          previoustime = durations[i]+ previoustime;
+          //increment track number
           i++;
-          print(track1map);
-          print(track1map.values.elementAt(i));
-          print(track1map.keys.elementAt(i));
-          player.dispose();
-          player = AudioPlayer();
-          player.setSourceDeviceFile(track1map.keys.elementAt(i));
-          player.resume();
+          audioPlayers[i].resume();
+
         }
-        if (track2map.values.length > x && timer.tick > previoustime2 + track2map.values.elementAt(i)) {
-          previoustime2= track2map.values.elementAt(i)+ previoustime2;
+        if (durations2.length > x+1 && (timer.tick > previoustime2 && timer.tick < previoustime2+100)) {
+          previoustime2= durations[x]+ previoustime2;
           x++;
-          playerTrack2.setSourceDeviceFile(track2map.keys.elementAt(i));
-          playerTrack2.resume();
+
+          audioPlayersTrack2[x].resume();
         }
 
       });
+
       print(track1map);
       print(track2map);
 
@@ -492,12 +536,16 @@ class dawPageState extends State<dawpage> {
 
   // Function to stop the timer
   void _stopTimer() {
+    refreshaudioPlayers();
     if (_timer != null && _timer!.isActive) {
       _timer!.cancel();
+      _onTimerComplete();
       setState(() {
         _currentTime = 0;
       });
     }
+    print(track1map);
+    print(track2map);
   }
 
   @override
@@ -571,23 +619,71 @@ class dawPageState extends State<dawpage> {
 
                   itemBuilder: (context) => [
                     PopupMenuItem(
+                      onTap: () async {
+                        key = "C";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
                       value: MenuItem.item1,
-                      child: Text('Item 1'),
+                      child: Text('C Major'),
                     ),
                     PopupMenuItem(
+                      onTap: () async {
+                        key = "G";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
                       value: MenuItem.item2,
-                      child: Text('Item 2'),
+                      child: Text('G Major'),
                     ),
                     PopupMenuItem(
+                      onTap: () async {
+                        key = "D";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
                       value: MenuItem.item3,
-                      child: Text('Item 3'),
+                      child: Text('D Major'),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "A";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item4,
+                      child: Text('A Major'),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "E";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item5,
+                      child: Text('E Major'),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "B";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item6,
+                      child: Text('B Major'),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "F#";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item7,
+                      child: Text('F# Major'),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "C#";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item8,
+                      child: Text('C# Major'),
                     ),
                   ],
-                  onSelected: (value){
-                    if (value == MenuItem.item1) {
 
-                    }
-                  },
                 )
               ]
 
@@ -653,6 +749,7 @@ class dawPageState extends State<dawpage> {
                                           context,
                                           MaterialPageRoute(builder: (context) => chordpage(_selectedFile, "chordspage")),
 
+
                                         );
                                       },
                                       child: Text("Chords"),
@@ -661,11 +758,11 @@ class dawPageState extends State<dawpage> {
                                   ),
 
                                   ElevatedButton(
-                                    onPressed: _incrementCounter,
+                                    onPressed: addtoTrack1Map,
                                     child: Text("Track 1"),
                                   ),
                                   ElevatedButton(
-                                    onPressed: addDragable,
+                                    onPressed: addtoTrack2Map,
                                     child: Text("Track 2"),
                                   ),
                                 ]
@@ -782,7 +879,7 @@ class dawPageState extends State<dawpage> {
                                       color: Colors.amber
                                   ),
                                   IconButton(
-                                    onPressed: _incrementCounter,
+                                    onPressed: () {},
                                     iconSize: 40,
                                     icon: Icon(
                                       Icons.restore_from_trash_outlined,
@@ -824,7 +921,7 @@ class dawPageState extends State<dawpage> {
                       borderRadius: BorderRadius.circular(2)
 
                   ),
-                  width: 380,
+                  width: 650,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Column(
@@ -836,7 +933,7 @@ class dawPageState extends State<dawpage> {
 
                             ),
                             height: 25,
-                            width: 380,
+                            width: 650,
                             decoration: BoxDecoration(border: Border(
                                 bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8))
                             ),
@@ -853,7 +950,7 @@ class dawPageState extends State<dawpage> {
                               ),
                               color: Color.fromRGBO(97, 103, 122, 0.7),
                               height: 95.3,
-                              width: 380
+                              width: 650
 
                           ),
                           Container(
@@ -865,7 +962,7 @@ class dawPageState extends State<dawpage> {
                             ),
 
                             height: 95.3,
-                            width: 380,
+                            width: 650,
                             decoration: BoxDecoration(border: Border(
                               top: BorderSide(width: 5, color: Color.fromRGBO(39, 40,41, 0.8)),
 
@@ -885,7 +982,7 @@ class dawPageState extends State<dawpage> {
                             ),
 
                             height: 95.3,
-                            width: 380,
+                            width: 650,
                             decoration: BoxDecoration(border: Border(
                               top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8)),
 

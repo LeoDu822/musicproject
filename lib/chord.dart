@@ -47,6 +47,8 @@ class chordPageState extends State<chordpage> {
   int chordselect = 0;
 
 
+
+
   Future<void> fetchChord() async {
     await http.get(Uri.parse('$url/selectChords/$chordselect/$_counter'));
   }
@@ -82,8 +84,14 @@ class chordPageState extends State<chordpage> {
         setState(() {
           audioFile = localAudioFile.path;
           print(audioFile);
-          _getAudioDuration1(audioFile);
+       //   _getAudioDuration1(audioFile);
           print(player.source);
+//upload file, do chords, if it doesnt play fully reload sever and app
+          //repeat
+
+//same file reload sever, then it should play,
+          player.setSourceDeviceFile(audioFile);
+          player.resume();
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => dawpage(audioFile, true)),
@@ -192,6 +200,7 @@ class chordPageState extends State<chordpage> {
         chordbuttons.clear();
       }
       if (_counter == finalChordLength+2) {
+
         fetchFile2();
 
         // Navigator.push(
@@ -429,6 +438,7 @@ class chordPageState extends State<chordpage> {
           onPressed: _incrementCounter,
           tooltip: 'Increment',
           child: const Icon(Icons.arrow_forward),
+
         )
       // This trailing comma makes auto-formatting nicer for build methods.
     );
