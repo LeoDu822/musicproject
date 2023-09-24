@@ -92,14 +92,16 @@ class chordPageState extends State<chordpage> {
 //same file reload sever, then it should play,
           player.setSourceDeviceFile(audioFile);
           player.resume();
+        
+          int miliseconds = 0;
+           await _getAudioDuration1(audioFile).then((value) {
+            miliseconds = value?.inMilliseconds;
+          });
+
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => dawpage(audioFile, true)),
+            MaterialPageRoute(builder: (context) => dawpage(audioFile, true, miliseconds)),
           );
-
-          _getAudioDuration1(audioFile).then((value) {
-            print(value?.inMilliseconds);
-          });
         });
       }
     });
