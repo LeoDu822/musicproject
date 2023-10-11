@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:musicproject/questionare.dart';
 import 'package:musicproject/savedsession.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:musicproject/timer.dart';
@@ -22,7 +23,7 @@ class dawpage extends StatefulWidget {
 
   final String title;
   final bool fromChords;
-  final int miliseconds = 0;
+  final int miliseconds;
 
   @override
   State<dawpage> createState() => dawPageState(title, fromChords, this.miliseconds);
@@ -50,7 +51,7 @@ class dawPageState extends State<dawpage> {
       currentLocalFile = passedInURL;
       audioFilesandDurationMap[currentLocalFile] = miliseconds;
     }
-  };
+  }
   var player = AudioPlayer();
   final playerTrack2 = AudioPlayer();
   File? _selectedFile;
@@ -303,16 +304,10 @@ class dawPageState extends State<dawpage> {
     print("THIS IS THE MILISENDONS" + milliseconds.toString());
     return milliseconds; // Returns a string with the format mm:ss
   }
-  void _scrollListener() {
-    print("hello");
-    if (_controller1.position.userScrollDirection == ScrollDirection.forward) {
-      _controller2.jumpTo(_controller1.offset);
-      _controller3.jumpTo(_controller1.offset);
-    }
-  }
+
   void initState()  {
     super.initState();
-    _controller1.addListener(_scrollListener);
+
     print("Im playing");
 
 
@@ -441,20 +436,28 @@ class dawPageState extends State<dawpage> {
   void _removeWidget(int index) {
     print(track1map);
     setState(() {
-      if (index >= 0 && index < track1.length) {
+
+      if (index >= 0 && index < audioPlayers.length) {
+        print("REMOVING TRACK 1");
+        audioPlayers.removeAt(index);
+        durations.removeAt(index);
         track1.removeAt(index);
+
       }
-      track1map.clear();
+
 
 
     });
   }
   void _removeWidget2(int index) {
     setState(() {
-      if (index >= 0 && index < track2.length) {
+      if (index >= 0 && index < audioPlayersTrack2.length) {
+
+        audioPlayersTrack2.removeAt(index);
+        durations2.removeAt(index);
         track2.removeAt(index);
       }
-      track2map.clear();
+
     });
 
   }
@@ -590,10 +593,25 @@ class dawPageState extends State<dawpage> {
                   },
                 ),
                 IconButton(
-                    onPressed: (){
+                    onPressed: () {
+                      print(currentLocalFile);
+                      setState(() {
+                         showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
 
-                      nextPage();
+                              content: QuestionnaireForm(
+                                  currentLocalFile), // Display the form here
+                            );
+                          },
+                        );
+                      });
+                      // fileNumber++;
+                      // File x = new File(currentLocalFile);
+                      // x.copy("/storage/emulated/0/Download/audio10.wav");
                     },
+                    // await localAudioFile.writeAsBytes(await r.bodyBytes);                    },
                     icon: Icon(Icons.save_outlined),
                     iconSize: 40
                 ),
@@ -830,9 +848,10 @@ class dawPageState extends State<dawpage> {
                                   IconButton(
                                     onPressed: () {
                                       if (track1.isNotEmpty) {
+                                          print("AM REMOVING FROM TRACK 1 NOW");
                                         _removeWidget(track1.length - 1); // Remove the last widget
                                       }
-                                      track1map.clear();
+
                                     },
                                     iconSize: 40,
                                     icon: Icon(
