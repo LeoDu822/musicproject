@@ -56,6 +56,8 @@ class dawPageState extends State<dawpage> {
   final playerTrack2 = AudioPlayer();
   File? _selectedFile;
   String audioFile = '';
+  double deviceLength = 0.0;
+  double deviceWidth = 0.0;
   AudioCache audioCache = AudioCache();
   int _counter = 0;
   ScrollController _controller1 = ScrollController();
@@ -562,7 +564,8 @@ class dawPageState extends State<dawpage> {
 
   @override
   Widget build(BuildContext context) {
-
+    deviceWidth = MediaQuery.of(context).size.width;
+    deviceLength = MediaQuery.of(context).size.height;
     return Scaffold(
 
         appBar: PreferredSize(
@@ -717,7 +720,7 @@ class dawPageState extends State<dawpage> {
           ),
         ),
         drawer: Container(
-          width: 350,
+          width: deviceWidth / 2.546,
           child: Drawer(
               child: SingleChildScrollView(
                 child: Column(
@@ -756,8 +759,8 @@ class dawPageState extends State<dawpage> {
                                         color: Color.fromRGBO(39, 40,41, 0.8),
                                       ),
                                       margin: EdgeInsets.fromLTRB(0, 13, 0, 10),
-                                      height:100,
-                                      width: 200,
+                                      height:deviceLength / 4,
+                                      width: deviceWidth / 4.5,
                                       child: getLocalFileDuration()
                                   )
                                 ]
@@ -801,8 +804,8 @@ class dawPageState extends State<dawpage> {
                     ),
                     Container(
                       color: Colors.blue,
-                      height: 143.3,
-                      width: 400,
+                      height: deviceLength / 2.75,
+                      width: deviceWidth / 2.25,
                       child: Column(
                           children: [
                             Container(
@@ -812,8 +815,8 @@ class dawPageState extends State<dawpage> {
                                 color: Color.fromRGBO(39, 40,41, 0.8),
                               ),
                               margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              height:100,
-                              width: 250,
+                              height: deviceLength / 4,
+                              width: deviceWidth / 3.6,
                             )
                           ]
                       ),
@@ -825,209 +828,207 @@ class dawPageState extends State<dawpage> {
           ),
         ),
         backgroundColor: Color.fromRGBO(122, 122, 150, 1),
-        body: SingleChildScrollView(
+        body: Row(
+            children: [
+              //side bar
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 28, 0, 0),
+                child: Container(
 
-          child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 50, 0, 0),
-                  child: Container(
+                  child: Column(
 
-                    child: Column(
-                        children: [
-                          Container(
-                            color: Colors.blue,
-                            height: 95.3,
-                            width: 180,
-                            child: Row(
-                                children: [
-                                  Container(
-                                      width: 100,
-                                      color: Colors.blue
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          height: deviceLength / 4.2,
+                          width: deviceWidth / 5,
+                          child: Row(
+                              children: [
+                                Container(
+                                    width: deviceWidth / 9,
+                                    color: Colors.blue
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    if (track1.isNotEmpty) {
+                                        print("AM REMOVING FROM TRACK 1 NOW");
+                                      _removeWidget(track1.length - 1); // Remove the last widget
+                                    }
+
+                                  },
+                                  iconSize: 40,
+                                  icon: Icon(
+                                    Icons.restore_from_trash_outlined,
                                   ),
-                                  IconButton(
-                                    onPressed: () {
-                                      if (track1.isNotEmpty) {
-                                          print("AM REMOVING FROM TRACK 1 NOW");
-                                        _removeWidget(track1.length - 1); // Remove the last widget
-                                      }
-
-                                    },
-                                    iconSize: 40,
-                                    icon: Icon(
-                                      Icons.restore_from_trash_outlined,
-                                    ),
-                                  )
-                                ]
-
-                            ),
+                                )
+                              ]
 
                           ),
-                          Container(
 
-                            height: 95.3,
-                            width: 180,
-                            child: Row(
-                                children: [
-                                  Container(
-                                      width: 100,
-                                      color: Colors.red
+                        ),
+                        Container(
+
+                          height: deviceLength / 4.2,
+                          width: deviceWidth / 5,
+                          child: Row(
+                              children: [
+                                Container(
+                                    width: deviceWidth / 9,
+                                    color: Colors.red
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    if (track2.isNotEmpty) {
+                                      _removeWidget2(track2.length - 1); // Remove the last widget
+                                    }
+                                  },
+                                  iconSize: 40,
+                                  icon: Icon(
+                                    Icons.restore_from_trash_outlined,
                                   ),
-                                  IconButton(
-                                    onPressed: () {
-                                      if (track2.isNotEmpty) {
-                                        _removeWidget2(track2.length - 1); // Remove the last widget
-                                      }
-                                    },
-                                    iconSize: 40,
-                                    icon: Icon(
-                                      Icons.restore_from_trash_outlined,
-                                    ),
-                                  )
-                                ]
+                                )
+                              ]
 
-                            ),
-                            decoration: BoxDecoration(border: Border(
-
-                              top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
-
-                            ),
-
-                                color: Colors.red
-                            ),
                           ),
-                          Container(
+                          decoration: BoxDecoration(border: Border(
 
-                            height: 95.3,
-                            width: 180,
-                            child: Row(
-                                children: [
-                                  Container(
-                                      width: 100,
-                                      color: Colors.amber
+                            top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+
+                          ),
+
+                              color: Colors.red
+                          ),
+                        ),
+                        Container(
+
+                          height: deviceLength / 4.2,
+                          width: deviceWidth / 5,
+                          child: Row(
+                              children: [
+                                Container(
+                                    width: deviceWidth / 9,
+                                    color: Colors.amber
+                                ),
+                                IconButton(
+                                  onPressed: () {},
+                                  iconSize: 40,
+                                  icon: Icon(
+                                    Icons.restore_from_trash_outlined,
                                   ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    iconSize: 40,
-                                    icon: Icon(
-                                      Icons.restore_from_trash_outlined,
-                                    ),
-                                  )
-                                ]
+                                )
+                              ]
 
-                            ),
-                            decoration: BoxDecoration(border: Border(
-
-                              top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
-
-                            ),
-
-                                color: Colors.amber
-                            ),
                           ),
-                        ]
-                    ),
+                          decoration: BoxDecoration(border: Border(
 
-                    decoration: BoxDecoration(border: Border(
-                      top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
-                      left: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
-                      bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+                            top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
 
-                    ),
+                          ),
 
-
-                    ),
-
-                    height: 500,
-                    width: 180,
+                              color: Colors.amber
+                          ),
+                        ),
+                      ]
                   ),
+
+                  decoration: BoxDecoration(border: Border(
+                    top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+                    left: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+                    bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+
+                  ),
+
+
+                  ),
+
+                  height: deviceLength,
+                  width: deviceWidth / 5,
                 ),
-                Container(
-                  decoration: BoxDecoration(border: Border.all(
-                      width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)
-                  ),
-                      borderRadius: BorderRadius.circular(2)
-
-                  ),
-                  width: 650,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Column(
-
-                        children: [
-                          Container(
-                            child: Row(
-
-
-                            ),
-                            height: 25,
-                            width: 650,
-                            decoration: BoxDecoration(border: Border(
-                                bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8))
-                            ),
-
-                                color: Color.fromRGBO(39, 40,41, 0.8)
-                            ),
-
-                          ),
-                          Container(
-                              child: Row(
-                                children: track1,
-
-
-                              ),
-                              color: Color.fromRGBO(97, 103, 122, 0.7),
-                              height: 95.3,
-                              width: 650
-
-                          ),
-                          Container(
-
-                            child: Row(
-
-                              children: track2,
-
-                            ),
-
-                            height: 95.3,
-                            width: 650,
-                            decoration: BoxDecoration(border: Border(
-                              top: BorderSide(width: 5, color: Color.fromRGBO(39, 40,41, 0.8)),
-
-
-                            ),
-
-                              color: Color.fromRGBO(97, 103, 122, 0.7),
-                            ),
-                          ),
-                          Container(
-
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-
-
-
-                            ),
-
-                            height: 95.3,
-                            width: 650,
-                            decoration: BoxDecoration(border: Border(
-                              top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8)),
-
-                            ),
-
-                              color: Color.fromRGBO(97, 103, 122, 0.7),
-                            ),
-                          )
-                        ]
-                    ),
-                  ), //tracklist
-
-                  height: 500,
+              ),
+              //main tracklist
+              Container(
+                decoration: BoxDecoration(border: Border.all(
+                    width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)
+                ),
+                    borderRadius: BorderRadius.circular(2)
 
                 ),
-              ]
-          ),
+                width: deviceWidth/ 1.38,
+                height: deviceLength,
+                child: Column(
+
+                    children: [
+                      Container(
+                        child: Row(
+
+
+                        ),
+                        height: 25,
+                        width: deviceWidth/ 1.38,
+                        decoration: BoxDecoration(border: Border(
+                            bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8))
+                        ),
+
+                            color: Color.fromRGBO(39, 40,41, 0.8)
+                        ),
+
+                      ),
+                      Container(
+                          child: Row(
+                            children: track1,
+
+
+                          ),
+                          color: Color.fromRGBO(97, 103, 122, 0.7),
+                          height: deviceLength / 4.2,
+                          width: deviceWidth/1.38
+
+                      ),
+                      Container(
+
+                        child: Row(
+
+                          children: track2,
+
+                        ),
+
+                        height: deviceLength / 4.2,
+                        width: deviceWidth/1.38,
+                        decoration: BoxDecoration(border: Border(
+                          top: BorderSide(width: 5, color: Color.fromRGBO(39, 40,41, 0.8)),
+
+
+                        ),
+
+                          color: Color.fromRGBO(97, 103, 122, 0.7),
+                        ),
+                      ),
+                      Container(
+
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+
+
+
+                        ),
+
+                        height: deviceLength / 4.2,
+                        width: deviceWidth/1.38,
+                        decoration: BoxDecoration(border: Border(
+                          top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8)),
+
+                        ),
+
+                          color: Color.fromRGBO(97, 103, 122, 0.7),
+                        ),
+                      )
+                    ]
+                ), //tracklist
+
+
+
+              ),
+            ]
         )
       // This trailing comma makes auto-formatting nicer for build methods.
     );

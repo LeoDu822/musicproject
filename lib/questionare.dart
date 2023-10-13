@@ -45,11 +45,12 @@ class QuestionnaireForm extends StatelessWidget {
 
                 y = await x.copy("/storage/emulated/0/Download/$name.wav");
               } else if (Platform.isIOS) {
-                Directory? downloads = await getDownloadsDirectory();
+                Directory? downloads = await getApplicationDocumentsDirectory();
                 File x = new File(currentLocalFile);
-                File y = new File(downloads!.path + "$name.wav");
 
-                y = await x.copy(downloads!.path + "$name.wav");
+                File y = new File(downloads!.path + "/" + "$name.wav");
+
+                y = await x.copy(downloads!.path + "/" + "$name.wav");
 
               }
               //double width = MediaQuery.of(context).size.width;

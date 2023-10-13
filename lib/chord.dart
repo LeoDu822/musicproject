@@ -27,6 +27,8 @@ class chordpage extends StatefulWidget {
 class chordPageState extends State<chordpage> {
   int _counter = 1;
   int finalChordLength = 0;
+  double deviceLength = 0.0;
+  double deviceWidth = 0.0;
   File? _selectedFile;
   Map <String, dynamic> fullchords = {};
   List <Widget> chordbuttons = [];
@@ -255,7 +257,8 @@ int filenumber = 0;
   @override
   Widget build(BuildContext context) {
     print(alreadygen);
-
+    deviceWidth = MediaQuery.of(context).size.width;
+    deviceLength = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
           shape: Border(
@@ -298,17 +301,17 @@ int filenumber = 0;
               child: Column(
 
                   children: [
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      width: 700,
-                      height: 100,
-                      decoration: BoxDecoration(border: Border.all(
-                          width: 5
-                      ),
-                          borderRadius: BorderRadius.circular(12)
-
-                      ),
-                    ),
+                    // Container(
+                    //   margin: EdgeInsets.all(5),
+                    //   width: deviceLength / 4.2,
+                    //   height: 100,
+                    //   decoration: BoxDecoration(border: Border.all(
+                    //       width: 5
+                    //   ),
+                    //       borderRadius: BorderRadius.circular(12)
+                    //
+                    //   ),
+                    // ),
                     Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Row(
