@@ -4,5 +4,9 @@
 <dict>
 	<key>IDEDidComputeMac32BitWarning</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
+    <key>UIFileSharingEnabled</key>
+    <true/>
 </dict>
 </plist>
