@@ -186,6 +186,11 @@ class dawPageState extends State<dawpage> {
 
     }
   }
+void chordScreen(){
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => chordpage(_selectedFile, "chordspage")));
+  }
   int fileNumber = 0;
   Future<void> _uploadFile() async {
     var url = 'https://priceyconcreteemacs.jackwagner7.repl.co'; // AWS/ec2 host
@@ -569,7 +574,7 @@ class dawPageState extends State<dawpage> {
     return Scaffold(
 
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
+          preferredSize: Size.fromHeight(56),
           //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           child: AppBar(
 
@@ -712,6 +717,14 @@ class dawPageState extends State<dawpage> {
                       value: MenuItem.item8,
                       child: Text('C# Major'),
                     ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "a";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item8,
+                      child: Text('a minor'),
+                    ),
                   ],
 
                 )
@@ -734,18 +747,49 @@ class dawPageState extends State<dawpage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
 
-                                  ElevatedButton(
-                                    onPressed: nextpagemelody,
-                                    child: Text("Saved melodies"),
+
+                                  GestureDetector(
+                                    onTap: nextpagemelody,
+                                    child: Container(
+                                        height: 25,
+                                        width: deviceWidth/6,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Color.fromRGBO(74, 67, 77, 1),
+                                                width: 2
+
+
+                                            ),
+                                            borderRadius: BorderRadius.circular(3)
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text("Saved Melodies", style: TextStyle(
+                                            fontFamily: "Tektur", fontSize: deviceWidth/55
+                                        ),)
+                                    ),
                                   ),
 
-                                  ElevatedButton(
-                                    onPressed: (){
-                                      _selectFile();
-                                    },
 
-                                    child: Text("Upload"),
-                                  )
+                                  GestureDetector(
+                                    onTap: _selectFile,
+                                    child: Container(
+                                        height: 25,
+                                        width: deviceWidth/10,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Color.fromRGBO(74, 67, 77, 1),
+                                                width: 2
+
+
+                                            ),
+                                            borderRadius: BorderRadius.circular(3)
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text("Upload", style: TextStyle(
+                                            fontFamily: "Tektur", fontSize: deviceWidth/55
+                                        ),)
+                                    ),
+                                  ),
                                 ]
                             ),
                             Column(
@@ -759,7 +803,7 @@ class dawPageState extends State<dawpage> {
                                         color: Color.fromRGBO(39, 40,41, 0.8),
                                       ),
                                       margin: EdgeInsets.fromLTRB(0, 13, 0, 10),
-                                      height:deviceLength / 4,
+                                      height:deviceLength / 3.5,
                                       width: deviceWidth / 4.5,
                                       child: getLocalFileDuration()
                                   )
@@ -769,31 +813,66 @@ class dawPageState extends State<dawpage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
 
-                                  ButtonTheme(
-                                    minWidth: 50,
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      onPressed: (){
+                                      GestureDetector(
+                                        onTap: chordScreen,
+                                        child: Container(
+                                            height: 25,
+                                            width: deviceWidth/10,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Color.fromRGBO(74, 67, 77, 1),
+                                                    width: 2
 
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => chordpage(_selectedFile, "chordspage")),
+
+                                                ),
+                                                borderRadius: BorderRadius.circular(3)
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: Text("Chords", style: TextStyle(
+                                                fontFamily: "Tektur", fontSize: deviceWidth/55
+                                            ),)
+                                        ),
+                                      ),
+
+                                  GestureDetector(
+                                    onTap: addtoTrack1Map,
+                                    child: Container(
+                                        height: 25,
+                                        width: deviceWidth/10,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Color.fromRGBO(74, 67, 77, 1),
+                                                width: 2
 
 
-                                        );
-                                      },
-                                      child: Text("Chords"),
-
+                                            ),
+                                            borderRadius: BorderRadius.circular(3)
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text("Track 1", style: TextStyle(
+                                            fontFamily: "Tektur", fontSize: deviceWidth/55
+                                        ),)
                                     ),
                                   ),
+                                  GestureDetector(
+                                    onTap: addtoTrack2Map,
+                                    child: Container(
+                                        height: 25,
+                                        width: deviceWidth/10,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Color.fromRGBO(74, 67, 77, 1),
+                                                width: 2
 
-                                  ElevatedButton(
-                                    onPressed: addtoTrack1Map,
-                                    child: Text("Track 1"),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: addtoTrack2Map,
-                                    child: Text("Track 2"),
+
+                                            ),
+                                            borderRadius: BorderRadius.circular(3)
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text("Track 2", style: TextStyle(
+                                            fontFamily: "Tektur", fontSize: deviceWidth/55
+                                        ),)
+                                    ),
                                   ),
                                 ]
                             ),
@@ -804,7 +883,7 @@ class dawPageState extends State<dawpage> {
                     ),
                     Container(
                       color: Colors.blue,
-                      height: deviceLength / 2.75,
+                      height: deviceLength / 2.30,
                       width: deviceWidth / 2.25,
                       child: Column(
                           children: [
@@ -832,7 +911,7 @@ class dawPageState extends State<dawpage> {
             children: [
               //side bar
               Padding(
-                padding: const EdgeInsets.fromLTRB(8, 28, 0, 0),
+                padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                 child: Container(
 
                   child: Column(
@@ -845,7 +924,7 @@ class dawPageState extends State<dawpage> {
                           child: Row(
                               children: [
                                 Container(
-                                    width: deviceWidth / 9,
+                                    width: deviceWidth / 10,
                                     color: Colors.blue
                                 ),
                                 IconButton(
@@ -856,7 +935,7 @@ class dawPageState extends State<dawpage> {
                                     }
 
                                   },
-                                  iconSize: 40,
+                                  iconSize: 28,
                                   icon: Icon(
                                     Icons.restore_from_trash_outlined,
                                   ),
@@ -873,7 +952,7 @@ class dawPageState extends State<dawpage> {
                           child: Row(
                               children: [
                                 Container(
-                                    width: deviceWidth / 9,
+                                    width: deviceWidth / 10,
                                     color: Colors.red
                                 ),
                                 IconButton(
@@ -882,7 +961,7 @@ class dawPageState extends State<dawpage> {
                                       _removeWidget2(track2.length - 1); // Remove the last widget
                                     }
                                   },
-                                  iconSize: 40,
+                                  iconSize: 28,
                                   icon: Icon(
                                     Icons.restore_from_trash_outlined,
                                   ),
@@ -906,12 +985,12 @@ class dawPageState extends State<dawpage> {
                           child: Row(
                               children: [
                                 Container(
-                                    width: deviceWidth / 9,
+                                    width: deviceWidth / 10,
                                     color: Colors.amber
                                 ),
                                 IconButton(
                                   onPressed: () {},
-                                  iconSize: 40,
+                                  iconSize: 28,
                                   icon: Icon(
                                     Icons.restore_from_trash_outlined,
                                   ),
@@ -934,99 +1013,88 @@ class dawPageState extends State<dawpage> {
                   decoration: BoxDecoration(border: Border(
                     top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
                     left: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
-                    bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)),
+                    bottom: BorderSide(width:5, color: Color.fromRGBO(39, 40, 41, 0.9)),
 
                   ),
 
 
                   ),
 
-                  height: deviceLength,
+                  height: deviceLength ,
                   width: deviceWidth / 5,
                 ),
               ),
               //main tracklist
-              Container(
-                decoration: BoxDecoration(border: Border.all(
-                    width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)
-                ),
-                    borderRadius: BorderRadius.circular(2)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Container(
+                  decoration: BoxDecoration(border: Border.all(
+                      width: 5, color: Color.fromRGBO(39, 40, 41, 0.9)
+                  ),
+                      borderRadius: BorderRadius.circular(2)
 
-                ),
-                width: deviceWidth/ 1.38,
-                height: deviceLength,
-                child: Column(
+                  ),
+                  width: deviceWidth/ 1.38,
+                  height: deviceLength,
+                  child: Column(
 
-                    children: [
-                      Container(
-                        child: Row(
+                      children: [
 
+                        Container(
+                            child: Row(
+                              children: track1,
+
+
+                            ),
+                            color: Color.fromRGBO(97, 103, 122, 0.7),
+                            height: deviceLength / 4.2,
+                            width: deviceWidth/1.38
 
                         ),
-                        height: 25,
-                        width: deviceWidth/ 1.38,
-                        decoration: BoxDecoration(border: Border(
-                            bottom: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8))
-                        ),
+                        Container(
 
-                            color: Color.fromRGBO(39, 40,41, 0.8)
-                        ),
-
-                      ),
-                      Container(
                           child: Row(
-                            children: track1,
+
+                            children: track2,
+
+                          ),
+
+                          height: deviceLength / 4.2,
+                          width: deviceWidth/1.38,
+                          decoration: BoxDecoration(border: Border(
+                            top: BorderSide(width: 5, color: Color.fromRGBO(39, 40,41, 0.8)),
 
 
                           ),
-                          color: Color.fromRGBO(97, 103, 122, 0.7),
+
+                            color: Color.fromRGBO(97, 103, 122, 0.7),
+                          ),
+                        ),
+                        Container(
+
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+
+
+
+                          ),
+
                           height: deviceLength / 4.2,
-                          width: deviceWidth/1.38
+                          width: deviceWidth/1.38,
+                          decoration: BoxDecoration(border: Border(
+                            top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8)),
 
-                      ),
-                      Container(
+                          ),
 
-                        child: Row(
-
-                          children: track2,
-
-                        ),
-
-                        height: deviceLength / 4.2,
-                        width: deviceWidth/1.38,
-                        decoration: BoxDecoration(border: Border(
-                          top: BorderSide(width: 5, color: Color.fromRGBO(39, 40,41, 0.8)),
-
-
-                        ),
-
-                          color: Color.fromRGBO(97, 103, 122, 0.7),
-                        ),
-                      ),
-                      Container(
-
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                            color: Color.fromRGBO(97, 103, 122, 0.7),
+                          ),
+                        )
+                      ]
+                  ), //tracklist
 
 
 
-                        ),
-
-                        height: deviceLength / 4.2,
-                        width: deviceWidth/1.38,
-                        decoration: BoxDecoration(border: Border(
-                          top: BorderSide(width: 5, color: Color.fromRGBO(39, 40, 41, 0.8)),
-
-                        ),
-
-                          color: Color.fromRGBO(97, 103, 122, 0.7),
-                        ),
-                      )
-                    ]
-                ), //tracklist
-
-
-
+                ),
               ),
             ]
         )

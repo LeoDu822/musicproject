@@ -209,17 +209,19 @@ int filenumber = 0;
 
   void _incrementCounter() {
     setState(() {
-      if (_counter == finalChordLength+1) {
-        _counter+=1;
-      }
+      // if (_counter == finalChordLength+1) {
+      //   _counter+=1;
+      // }
       if (_counter <= finalChordLength) {
         fetchChord();
         _counter+=1;
         chordbuttons.clear();
+        refreshChordButtons();
       }
-      if (_counter == finalChordLength+2) {
+      if (_counter == finalChordLength + 1 ) {
         fetchFile2();
       }
+      print(_counter);
     });
   }
 
@@ -293,10 +295,10 @@ int filenumber = 0;
               if (alreadygen == false) {
                 fullchords = jsonDecode(snapshot.data!);
                 alreadygen = true;
-
+                refreshChordButtons();
               }
 
-              refreshChordButtons();
+              //
               return SingleChildScrollView(
               child: Column(
 
