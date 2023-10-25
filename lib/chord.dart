@@ -16,7 +16,8 @@ import 'dawscreen.dart';
 
 class chordpage extends StatefulWidget {
   final File? file;
-  chordpage(this.file, this.title);
+  final Track1ListClass track1;
+  chordpage(this.track1, this.file, this.title);
 
   final String title;
 
@@ -79,7 +80,7 @@ int filenumber = 0;
         filenumber++;
         await localAudioFile.writeAsBytes(await r.bodyBytes);
 
-        setState(() async {
+
 
           audioFile = localAudioFile.path;
           print(audioFile);
@@ -98,7 +99,7 @@ int filenumber = 0;
               miliseconds = value?.inMilliseconds;
              }
             
-          });
+
 
           Navigator.push(
             context,
@@ -209,9 +210,9 @@ int filenumber = 0;
 
   void _incrementCounter() {
     setState(() {
-      // if (_counter == finalChordLength+1) {
-      //   _counter+=1;
-      // }
+      if (_counter == finalChordLength+1) {
+        _counter+=1;
+      }
       if (_counter <= finalChordLength) {
         fetchChord();
         _counter+=1;
@@ -221,7 +222,7 @@ int filenumber = 0;
       if (_counter == finalChordLength + 1 ) {
         fetchFile2();
       }
-      print(_counter);
+      print("This is current count " + _counter.toString());
     });
   }
 
@@ -300,6 +301,7 @@ int filenumber = 0;
 
               //
               return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
               child: Column(
 
                   children: [

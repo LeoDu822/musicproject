@@ -16,7 +16,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-
+import "utility.dart";
 
 class dawpage extends StatefulWidget {
   const dawpage(this.title, this.fromChords, this.miliseconds);
@@ -66,6 +66,7 @@ class dawPageState extends State<dawpage> {
   List<Widget> track1 = [];
   List<Widget> track2 = [];
   late Map<String, int> audioFilesandDurationMap = {};
+  Track1ListClass track1List = new Track1ListClass();
 
   //Key: The string to play-Filepath
   //Value: the int is the milisecond duration of the file
@@ -189,7 +190,7 @@ class dawPageState extends State<dawpage> {
 void chordScreen(){
     Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => chordpage(_selectedFile, "chordspage")));
+        MaterialPageRoute(builder: (context) => chordpage(track1List, _selectedFile, "chordspage")));
   }
   int fileNumber = 0;
   Future<void> _uploadFile() async {
@@ -328,6 +329,7 @@ void chordScreen(){
     );
   }
   void playsound() {
+
     _startTimer();
     // if (fromChords == true) {
     //   player.setSourceDeviceFile(passedInURL);
@@ -344,6 +346,7 @@ void chordScreen(){
     // _startTimer();
   }
   void stopSound() {
+    print("stopping Sound");
     _stopTimer();
   }
   void nextPage(){
@@ -355,7 +358,7 @@ void chordScreen(){
   void nextpage(){
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => chordpage(_selectedFile, "chord Screen")),
+      MaterialPageRoute(builder: (context) => chordpage(track1List, _selectedFile, "chord Screen")),
 
     );
   }
@@ -415,10 +418,13 @@ void chordScreen(){
   List<String> filePaths = [];
 
   void refreshaudioPlayers(){
+
     for (int i  = 0; i < audioPlayers.length; i++){
+      audioPlayers[i].stop();
       audioPlayers[i].setSourceDeviceFile(filePaths[i]);
     }
     for (int x  = 0; x < audioPlayersTrack2.length; x++){
+      audioPlayersTrack2[x].stop();
       audioPlayersTrack2[x].setSourceDeviceFile(filePaths2[x]);
     }
   }
@@ -437,8 +443,10 @@ void chordScreen(){
     print(track1map);
     setState(() {
 
+      track1List.AddTrack1(currentLocalFile, audioFilesandDurationMap[currentLocalFile]!);
       track1.add(dawObject(100));
     });
+    print("THIS IS THE TRACK 1 LENGTH " + track1List.track1.length.toString());
   }
   void _removeWidget(int index) {
     print(track1map);
@@ -449,7 +457,7 @@ void chordScreen(){
         audioPlayers.removeAt(index);
         durations.removeAt(index);
         track1.removeAt(index);
-
+        filePaths.removeAt(index);
       }
 
 
@@ -463,6 +471,7 @@ void chordScreen(){
         audioPlayersTrack2.removeAt(index);
         durations2.removeAt(index);
         track2.removeAt(index);
+        filePaths2.removeAt(index);
       }
 
     });
@@ -574,7 +583,7 @@ void chordScreen(){
     return Scaffold(
 
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(56),
+          preferredSize: Size.fromHeight(55),
           //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           child: AppBar(
 
@@ -595,10 +604,11 @@ void chordScreen(){
                     Icons.stop_circle_outlined,
                   ),
                   iconSize: 40,
-                  onPressed: ()
-                  {
-                    stopSound();
-                  },
+                  onPressed: stopSound
+
+
+
+
                 ),
                 IconButton(
                     onPressed: () {
@@ -703,7 +713,7 @@ void chordScreen(){
                     ),
                     PopupMenuItem(
                       onTap: () async {
-                        key = "F#";
+                        key = "F2";
                         await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
                       },
                       value: MenuItem.item7,
@@ -711,7 +721,7 @@ void chordScreen(){
                     ),
                     PopupMenuItem(
                       onTap: () async {
-                        key = "C#";
+                        key = "C2";
                         await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
                       },
                       value: MenuItem.item8,
@@ -724,6 +734,63 @@ void chordScreen(){
                       },
                       value: MenuItem.item8,
                       child: Text('a minor'),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "e";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item8,
+                      child: Text('e minor'),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "b";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item8,
+                      child: Text('b minor'),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "f2";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item8,
+                      child: Text('f# minor'),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "c2";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item8,
+                      child: Text('c# minor'),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "g2";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item8,
+                      child: Text('g# minor'),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "d2";
+                        print(key);
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item8,
+                      child: Text('d# minor'),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        key = "a2";
+                        await http.get(Uri.parse('https://newalgorithm.thechosenonech1.repl.co/setChordsKey/$key'));
+                      },
+                      value: MenuItem.item8,
+                      child: Text('a# minor'),
                     ),
                   ],
 
@@ -1042,7 +1109,7 @@ void chordScreen(){
 
                         Container(
                             child: Row(
-                              children: track1,
+                              children: track1List.track1,
 
 
                             ),
@@ -1102,3 +1169,5 @@ void chordScreen(){
     );
   }
 }
+
+
