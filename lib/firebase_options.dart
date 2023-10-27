@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBkVaQ8yE1lHcQ31mB28Oy882XEMTB4_l0',
-    appId: '1:216809890780:android:434553b2923ec3df026519',
+    appId: '1:216809890780:android:414126e4c66caa20026519',
     messagingSenderId: '216809890780',
     projectId: 'compsmart-f2df0',
     storageBucket: 'compsmart-f2df0.appspot.com',
@@ -59,10 +59,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDiIAe6s6u6Rn9ZnBrNxx0pOY954pCQ93E',
-    appId: '1:216809890780:ios:9472656d23618509026519',
+    appId: '1:216809890780:ios:48ad5b007cdb77ee026519',
     messagingSenderId: '216809890780',
     projectId: 'compsmart-f2df0',
     storageBucket: 'compsmart-f2df0.appspot.com',
-    iosBundleId: 'com.example.musicproject',
+    iosBundleId: 'com.codingminds.CompSmart',
   );
 }

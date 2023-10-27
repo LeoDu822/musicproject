@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musicproject/signup.dart';
+import 'package:musicproject/utility.dart';
 //import 'package:flutter_class/Accounts/changePasswords.dart';
 //import 'package:flutter_class/Accounts/signup.dart';
 //import 'package:flutter_class/welcome.dart';
@@ -7,11 +8,11 @@ import 'authentication.dart';
 import '../main.dart';
 import 'dawscreen.dart';
 class Login extends StatefulWidget{
-  late final Characters character;
-  Login(this.character);
+
+  Login();
 
   @override
-  State<Login> createState() => _LoginState(character);
+  State<Login> createState() => _LoginState();
 
 
 
@@ -20,7 +21,7 @@ class Login extends StatefulWidget{
 
 class _LoginState extends State<Login> {
   late final Characters character;
-  _LoginState(this.character);
+  _LoginState();
   String email = "";
   String password = "";
   @override
@@ -92,7 +93,7 @@ class _LoginState extends State<Login> {
                       .then((result) {
                         if (result == null) {
                           Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) => dawpage('My Home Page', false, 0)));
+                              MaterialPageRoute(builder: (context) => dawpage(sessionUtility(), 'My Home Page', false, 0)));
                         }
                         else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -158,7 +159,7 @@ class _LoginState extends State<Login> {
                 onPressed: (){
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => dawpage('My Home Page', false),
+                      MaterialPageRoute(builder: (context) => dawpage(sessionUtility(), "daw screen", false, 100),
                       ));
                 },
                 child: Text("Log In With Google",
@@ -190,7 +191,7 @@ class _LoginState extends State<Login> {
                 onPressed: (){
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => dawpage('My Home Page', false),
+                      MaterialPageRoute(builder: (context) => dawpage(sessionUtility(), "daw screen", false, 100),
                       ));
                 },
                 child:

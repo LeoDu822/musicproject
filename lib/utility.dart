@@ -37,4 +37,28 @@ class sessionUtility
   TrackListClass track2 = new TrackListClass();
   late Map<String, int> audioFilesandDurationMap = {};
   String currentLocalFile = "";
+
+  Map<String, dynamic>  toJson() {
+    Map<String, dynamic> sessionMap = new Map<String, dynamic>();
+
+    sessionMap["track1"] = {
+      "filePaths" : track1.filePaths,
+      "durations" : track1.durations,
+      "audioPlayers" : track1.audioPlayers,
+      "widgets" : track1.track1
+    };
+
+    sessionMap["track2"] = {
+      "filePaths" : track2.filePaths,
+      "durations" : track2.durations,
+      "audioPlayers" : track2.audioPlayers,
+      "widgets" : track2.track1
+    };
+
+    sessionMap["audioFilesandDurationsMap"] = audioFilesandDurationMap;
+
+    sessionMap["currentLocalFile"] = currentLocalFile;
+
+    return sessionMap;
+  }
 }

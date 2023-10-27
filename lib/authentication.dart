@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 
 class AuthenticationHelper {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth();
 
 
   get user => _auth.currentUser;
@@ -24,28 +24,6 @@ class AuthenticationHelper {
         email: email,
         password: password,
       );
-      // var actionCodeSettings = {
-      //   url: 'https://www.example.com/cart?email=user@example.com&cartId=123',
-      //   iOS: {
-      //     bundleId: 'com.example.ios'
-      //   },
-      //   android: {
-      //     packageName: 'com.example.android',
-      //     installApp: true,
-      //     minimumVersion: '12'
-      //   },
-      //   handleCodeInApp: true
-      // };
-    //   if (user != null){
-    //     print("sent");
-    //     user.sendEmailVerification()
-    //         .then(() {
-    //         // Verification email sent.
-    //     })
-    //     .catch((error) {
-    // // Error occurred. Inspect error.code.
-    // });
-    // }
     } on FirebaseAuthException catch (e) {
       return e.message;
     }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'dawscreen.dart';
-
+import 'login.dart';
+import "utility.dart";
 class splashpage extends StatefulWidget {
   const splashpage({super.key, required this.title});
 
@@ -17,7 +18,7 @@ class splashPageState extends State<splashpage> {
   void nextpage(){
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => dawpage("daw screen", false, 100)),
+      MaterialPageRoute(builder: (context) => Login()),
     );
   }
   @override

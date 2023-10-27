@@ -1,5 +1,6 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -7,9 +8,16 @@ import 'package:file_picker/file_picker.dart';
 import 'package:musicproject/questionare.dart';
 import 'package:musicproject/savedsession.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:musicproject/timer.dart';
-import 'package:musicproject/upload_screen.dart';
-import 'package:musicproject/widgets.dart';
+
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:musicproject/dawscreen.dart';
+import 'package:musicproject/utility.dart';
+
+import 'authentication.dart';
+import 'login.dart';
+import '../main.dart';
 import 'SavedMelodies.dart';
 import 'chord.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,14 +27,14 @@ import 'package:http/http.dart' as http;
 import "utility.dart";
 
 class dawpage extends StatefulWidget {
-  const dawpage(this.title, this.fromChords, this.miliseconds);
-
+  const dawpage(this.session, this.title, this.fromChords, this.miliseconds);
+  final sessionUtility session;
   final String title;
   final bool fromChords;
   final int miliseconds;
 
   @override
-  State<dawpage> createState() => dawPageState(title, fromChords, this.miliseconds);
+  State<dawpage> createState() => dawPageState(session, title, fromChords, this.miliseconds);
 }
 
 enum  MenuItem {
@@ -46,35 +54,35 @@ class dawPageState extends State<dawpage> {
   String key = "G";
   bool fromChords = false;
   int miliseconds = 0;
-  dawPageState(this.passedInURL, this.fromChords, this.miliseconds){
-    if (this.fromChords == true) {
-      currentLocalFile = passedInURL;
-      audioFilesandDurationMap[currentLocalFile] = miliseconds;
-    }
-  }
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  sessionUtility session = new sessionUtility();
   var player = AudioPlayer();
   final playerTrack2 = AudioPlayer();
   File? _selectedFile;
   String audioFile = '';
   double deviceLength = 0.0;
   double deviceWidth = 0.0;
-  AudioCache audioCache = AudioCache();
-  int _counter = 0;
-  ScrollController _controller1 = ScrollController();
-  ScrollController _controller2 = ScrollController();
-  ScrollController _controller3 = ScrollController();
-  List<Widget> track1 = [];
-  List<Widget> track2 = [];
-  late Map<String, int> audioFilesandDurationMap = {};
-  Track1ListClass track1List = new Track1ListClass();
+
+
+
+
+  dawPageState(this.session, this.passedInURL, this.fromChords, this.miliseconds){
+    if (this.fromChords == true) {
+      session = this.session;
+      session.currentLocalFile = passedInURL;
+      session.audioFilesandDurationMap[session.currentLocalFile] = miliseconds;
+    }
+  }
+
+
 
   //Key: The string to play-Filepath
   //Value: the int is the milisecond duration of the file
-  late Map<String, int> track1map = {};
-  late Map<String, int> track2map = {};
+
 
   //Stores the filepath of whatever file you currently have selected
-  String currentLocalFile = "";
+
 
   
 
@@ -97,12 +105,7 @@ class dawPageState extends State<dawpage> {
     if (result != null) {
 
       _selectedFile = File(result.files.single.path!);
-      await _getAudioDuration1(_selectedFile!.path).then((value) {
 
-        // audioFilesandDurationMap[_selectedFile!.path] = value!.inMilliseconds;
-        print(value);
-      });
-      print(audioFilesandDurationMap);
 
       var url = 'https://newalgorithm.thechosenonech1.repl.co'; // AWS/ec2 host
 
@@ -143,9 +146,8 @@ class dawPageState extends State<dawpage> {
 
         await _getAudioDuration1(localAudioFile.path).then((value) {
           print(value!.inMilliseconds);
-          currentLocalFile = localAudioFile.path;
-          audioFilesandDurationMap[localAudioFile.path] = value!.inMilliseconds;
-          print(audioFilesandDurationMap);
+          session.currentLocalFile = localAudioFile.path;
+          session.audioFilesandDurationMap[localAudioFile.path] = value!.inMilliseconds;
 
         });
         setState(() {
@@ -160,20 +162,7 @@ class dawPageState extends State<dawpage> {
 
 
 
-        // await _selectedFile?.writeAsBytes(await r.stream.toBytes());
-        // audioFile = _selectedFile!.path;
-        // await _getAudioDuration1(audioFile).then((value) {
-        //   print(value!.inMilliseconds);
-        //   audioFilesandDurationMap[_selectedFile!.path] = value!.inMilliseconds;
-        // });
-        // setState(() {
-        //   audioFile = localAudioFile.path;
-        //   print(audioFile);
-        //   print(player.source);
-        //   player.setSourceDeviceFile(audioFile);
-        //
-        //   player.resume();
-        // });
+
       });
 
 
@@ -190,7 +179,7 @@ class dawPageState extends State<dawpage> {
 void chordScreen(){
     Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => chordpage(track1List, _selectedFile, "chordspage")));
+        MaterialPageRoute(builder: (context) => chordpage(session, _selectedFile, "chordspage")));
   }
   int fileNumber = 0;
   Future<void> _uploadFile() async {
@@ -321,29 +310,9 @@ void chordScreen(){
 
     player.setSourceUrl("https://cdn.discordapp.com/attachments/1070956419949535272/1137164260208812062/intro.wav");
   }
-  void stoppage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => TimerWidget()),
 
-    );
-  }
   void playsound() {
-
     _startTimer();
-    // if (fromChords == true) {
-    //   player.setSourceDeviceFile(passedInURL);
-    //   player.resume();
-    // }
-    // else {
-    //   print("playing from current file");
-    //   setState(() {
-    //     player.setSourceDeviceFile(currentLocalFile);
-    //     player.resume();
-    //   });
-    // }
-
-    // _startTimer();
   }
   void stopSound() {
     print("stopping Sound");
@@ -358,7 +327,7 @@ void chordScreen(){
   void nextpage(){
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => chordpage(track1List, _selectedFile, "chord Screen")),
+      MaterialPageRoute(builder: (context) => chordpage(session, _selectedFile, "chord Screen")),
 
     );
   }
@@ -369,95 +338,52 @@ void chordScreen(){
 
     );
   }
-  void track1Set(index, value){
-    track1[index] = value;
-  }
-  Widget track1Get(index, direction) {
-    if (index + direction > track1.length || index + direction < 0)
-    {
-      return track1[index];
-    }
 
-    return dawObject(10);
-  }
-  void track2Set(index, value) {
-    track2[index] = value;
-  }
-  Widget track2Get(index, direction) {
-    if (index + direction > track2.length || index + direction < 0)
-    {
-      return track2[index];
-    }
 
-    return dawObject(10);
-  }
 
-  List<AudioPlayer> audioPlayersTrack2 = [];
-  List<int> durations2 = [];
-  List<String> filePaths2 = [];
+
 
   void addtoTrack2Map() {
-    track2map[currentLocalFile] = audioFilesandDurationMap[currentLocalFile]!;
-    print(track2map);
     AudioPlayer test = new AudioPlayer();
-
-    test.setSourceDeviceFile(currentLocalFile);
-
-    durations2.add(audioFilesandDurationMap[currentLocalFile]!);
-    filePaths2.add(currentLocalFile);
-    audioPlayersTrack2.add(test);
-
+    test.setSourceDeviceFile(session.currentLocalFile);
     setState(() {
-      track2.add(dawObject(100));
+      session.track2.AddTrack1(session.currentLocalFile, session.audioFilesandDurationMap[session.currentLocalFile]!);
     });
-
+    print("THIS IS THE TRACK 1 LENGTH " + session.track1.track1.length.toString());
   }
 
-  List<AudioPlayer> audioPlayers = [];
-  List<int> durations = [];
-  List<String> filePaths = [];
+
 
   void refreshaudioPlayers(){
 
-    for (int i  = 0; i < audioPlayers.length; i++){
-      audioPlayers[i].stop();
-      audioPlayers[i].setSourceDeviceFile(filePaths[i]);
+    for (int i  = 0; i < session.track1.audioPlayers.length; i++){
+      session.track1.audioPlayers[i].stop();
+      session.track1.audioPlayers[i].setSourceDeviceFile(session.track1.filePaths[i]);
     }
-    for (int x  = 0; x < audioPlayersTrack2.length; x++){
-      audioPlayersTrack2[x].stop();
-      audioPlayersTrack2[x].setSourceDeviceFile(filePaths2[x]);
+    for (int x  = 0; x < session.track2.audioPlayers.length; x++){
+      session.track2.audioPlayers[x].stop();
+      session.track2.audioPlayers[x].setSourceDeviceFile(session.track2.filePaths[x]);
     }
   }
 
   void addtoTrack1Map() {
-
-    track1map[currentLocalFile] = audioFilesandDurationMap[currentLocalFile]!;
     AudioPlayer test = new AudioPlayer();
-
-    test.setSourceDeviceFile(currentLocalFile);
-    print(track1map);
-    durations.add(audioFilesandDurationMap[currentLocalFile]!);
-    filePaths.add(currentLocalFile);
-    audioPlayers.add(test);
-    print("Hello World");
-    print(track1map);
+    test.setSourceDeviceFile(session.currentLocalFile);
     setState(() {
-
-      track1List.AddTrack1(currentLocalFile, audioFilesandDurationMap[currentLocalFile]!);
-      track1.add(dawObject(100));
+      session.track1.AddTrack1(session.currentLocalFile, session.audioFilesandDurationMap[session.currentLocalFile]!);
     });
-    print("THIS IS THE TRACK 1 LENGTH " + track1List.track1.length.toString());
+    print("THIS IS THE TRACK 1 LENGTH " + session.track1.track1.length.toString());
   }
+
   void _removeWidget(int index) {
-    print(track1map);
     setState(() {
 
-      if (index >= 0 && index < audioPlayers.length) {
+      if (index >= 0 && index < session.track1.audioPlayers.length) {
         print("REMOVING TRACK 1");
-        audioPlayers.removeAt(index);
-        durations.removeAt(index);
-        track1.removeAt(index);
-        filePaths.removeAt(index);
+        session.track1.audioPlayers.removeAt(index);
+        session.track1.durations.removeAt(index);
+        session.track1.track1.removeAt(index);
+        session.track1.filePaths.removeAt(index);
       }
 
 
@@ -466,12 +392,16 @@ void chordScreen(){
   }
   void _removeWidget2(int index) {
     setState(() {
-      if (index >= 0 && index < audioPlayersTrack2.length) {
+      if (index >= 0 && index < session.track2.audioPlayers.length) {
 
-        audioPlayersTrack2.removeAt(index);
-        durations2.removeAt(index);
-        track2.removeAt(index);
-        filePaths2.removeAt(index);
+        if (index >= 0 && index < session.track2.audioPlayers.length) {
+          print("REMOVING TRACK 1");
+          session.track2.audioPlayers.removeAt(index);
+          session.track2.durations.removeAt(index);
+          session.track2.track1.removeAt(index);
+          session.track2.filePaths.removeAt(index);
+        }
+
       }
 
     });
@@ -504,22 +434,19 @@ void chordScreen(){
     //Milliseconds of the tracks you past
     int previoustime = 0;
     int previoustime2 = 0;
-    print(track1map);
-    print(track2map);
+
 
     setState(() {
       //if there is data
       //play data
-      if (durations.length > i) {
-        previoustime = durations[i];
-       // audioFile = track1map.keys.elementAt(i);
-       // player.setSourceDeviceFile(track1map.keys.elementAt(i));
-      //  player.resume();
-        audioPlayers[i].resume();
+      if (session.track1.durations.length > i) {
+        previoustime = session.track1.durations[i];
+
+        session.track1.audioPlayers[i].resume();
       }
-      if (durations2.length > x) {
-        previoustime2 = durations2[x];
-        audioPlayersTrack2[x].resume();
+      if (session.track2.durations.length > x) {
+        previoustime2 = session.track2.durations[x];
+        session.track2.audioPlayers[x].resume();
       }
 
     });
@@ -530,27 +457,24 @@ void chordScreen(){
         _currentTime = _timerDuration - timer.tick;
         print(timer.tick);
         //if we have data left and the current time is greater then the previous time
-        if (durations.length > i+1 && (timer.tick > previoustime && timer.tick < previoustime+100)) {
+        if (session.track1.durations.length > i+1 && (timer.tick > previoustime && timer.tick < previoustime+100)) {
           //play the next track
 
           //first add the pervious track time to the previoustime variable
-          previoustime = durations[i]+ previoustime;
+          previoustime = session.track1.durations[i]+ previoustime;
           //increment track number
           i++;
-          audioPlayers[i].resume();
+          session.track1.audioPlayers[i].resume();
 
         }
-        if (durations2.length > x+1 && (timer.tick > previoustime2 && timer.tick < previoustime2+100)) {
-          previoustime2= durations[x]+ previoustime2;
+        if (session.track2.durations.length > x+1 && (timer.tick > previoustime2 && timer.tick < previoustime2+100)) {
+          previoustime2= session.track2.durations[x]+ previoustime2;
           x++;
 
-          audioPlayersTrack2[x].resume();
+          session.track2.audioPlayers[x].resume();
         }
 
       });
-
-      print(track1map);
-      print(track2map);
 
 
       // Check if the timer has completed
@@ -572,9 +496,10 @@ void chordScreen(){
         _currentTime = 0;
       });
     }
-    print(track1map);
-    print(track2map);
+
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -612,7 +537,11 @@ void chordScreen(){
                 ),
                 IconButton(
                     onPressed: () {
-                      print(currentLocalFile);
+
+                      db.collection("users").doc(AuthenticationHelper().uid).collection("sessions").add(session.toJson());
+
+                      // root of our database ~/
+                      /*
                       setState(() {
                          showDialog(
                           context: context,
@@ -620,11 +549,13 @@ void chordScreen(){
                             return AlertDialog(
 
                               content: QuestionnaireForm(
-                                  currentLocalFile), // Display the form here
+                                  session.currentLocalFile), // Display the form here
                             );
                           },
                         );
                       });
+                      */
+
                       // fileNumber++;
                       // File x = new File(currentLocalFile);
                       // x.copy("/storage/emulated/0/Download/audio10.wav");
@@ -996,9 +927,9 @@ void chordScreen(){
                                 ),
                                 IconButton(
                                   onPressed: () {
-                                    if (track1.isNotEmpty) {
+                                    if (session.track1.track1.isNotEmpty) {
                                         print("AM REMOVING FROM TRACK 1 NOW");
-                                      _removeWidget(track1.length - 1); // Remove the last widget
+                                      _removeWidget(session.track1.track1.length - 1); // Remove the last widget
                                     }
 
                                   },
@@ -1024,8 +955,8 @@ void chordScreen(){
                                 ),
                                 IconButton(
                                   onPressed: () {
-                                    if (track2.isNotEmpty) {
-                                      _removeWidget2(track2.length - 1); // Remove the last widget
+                                    if (session.track2.track1.isNotEmpty) {
+                                      _removeWidget2(session.track2.track1.length - 1); // Remove the last widget
                                     }
                                   },
                                   iconSize: 28,
@@ -1109,7 +1040,7 @@ void chordScreen(){
 
                         Container(
                             child: Row(
-                              children: track1List.track1,
+                              children: session.track1.track1,
 
 
                             ),
@@ -1122,7 +1053,7 @@ void chordScreen(){
 
                           child: Row(
 
-                            children: track2,
+                            children: session.track2.track1,
 
                           ),
 

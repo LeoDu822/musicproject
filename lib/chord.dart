@@ -4,11 +4,12 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:musicproject/savedsession.dart';
 
-
+import "utility.dart";
 import 'package:flutter/rendering.dart';
 
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:musicproject/utility.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'dart:io';
@@ -16,13 +17,13 @@ import 'dawscreen.dart';
 
 class chordpage extends StatefulWidget {
   final File? file;
-  final Track1ListClass track1;
-  chordpage(this.track1, this.file, this.title);
+  final sessionUtility session;
+  chordpage(this.session, this.file, this.title);
 
   final String title;
 
   @override
-  State<chordpage> createState() => chordPageState(file);
+  State<chordpage> createState() => chordPageState(session, file);
 }
 
 class chordPageState extends State<chordpage> {
@@ -34,8 +35,9 @@ class chordPageState extends State<chordpage> {
   Map <String, dynamic> fullchords = {};
   List <Widget> chordbuttons = [];
   String url = "https://newalgorithm.thechosenonech1.repl.co";
+  final sessionUtility session;
 
-  chordPageState(this._selectedFile){
+  chordPageState(this.session, this._selectedFile){
   //  alreadygen = false;
   }
 
@@ -103,7 +105,7 @@ int filenumber = 0;
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => dawpage(audioFile, true, miliseconds!)),
+            MaterialPageRoute(builder: (context) => dawpage(this.session, audioFile, true, miliseconds!)),
           );
         });
       }

@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:musicproject/dawscreen.dart';
+import 'package:musicproject/utility.dart';
 
 import 'authentication.dart';
 import 'login.dart';
@@ -27,7 +28,7 @@ class _SignupState extends State<Signup> {
   bool thisCharacterTeacher = false;
   String Teachercode = "OOOO";
   String CorrectTeacherCode = "";
-  FirebaseFirestore db = FirebaseFirestore.instance;
+  FirebaseFirestore db = FirebaseFirestore();
 
 
   _SignupState(){
@@ -156,7 +157,7 @@ class _SignupState extends State<Signup> {
 
 
                           Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) => dawpage('My Home Page', false)));
+                              MaterialPageRoute(builder: (context) => dawpage(sessionUtility(), "daw screen", false, 100)));
                         }
                         else if (character.toString() == "Character.teacher") {
                           if (Teachercode == CorrectTeacherCode) {
@@ -203,7 +204,7 @@ class _SignupState extends State<Signup> {
 
 
                           Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) => dawpage('My Home Page', false)));
+                              MaterialPageRoute(builder: (context) => dawpage(sessionUtility(), "daw screen", false, 100)));
                         }
                         else {
                           newMap = {};
@@ -213,7 +214,7 @@ class _SignupState extends State<Signup> {
 
 
                           Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) => dawpage('My Home Page', false)));
+                              MaterialPageRoute(builder: (context) => dawpage(sessionUtility(), "daw screen", false, 100)));
 
                         }
 
@@ -267,7 +268,7 @@ class _SignupState extends State<Signup> {
                   onPressed: (){
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => dawpage('My Home Page', false)));
+                        MaterialPageRoute(builder: (context) => dawpage(sessionUtility(), "daw screen", false, 100)));
                   },
                   child: Text("Continue With Google",
                     style: TextStyle(
@@ -298,7 +299,7 @@ class _SignupState extends State<Signup> {
                   onPressed: (){
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Login(character),
+                        MaterialPageRoute(builder: (context) => Login(),
                         ));
                   },
                   child: Text("Continue With Microsoft",
@@ -331,7 +332,7 @@ class _SignupState extends State<Signup> {
                   onPressed: (){
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Login(character),
+                        MaterialPageRoute(builder: (context) => Login(),
                         ));
                   },
                   child:
