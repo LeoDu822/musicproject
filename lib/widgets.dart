@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:musicproject/utility.dart';
 
 import 'dawscreen.dart';
 
@@ -56,6 +57,43 @@ class dawObject extends StatelessWidget {
 
       height:95.3,
       width: 200,
+    );
+  }
+}
+
+
+class sessionObject extends StatelessWidget{
+  late sessionUtility session;
+  sessionObject(this.session);
+  @override
+  Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceLength = MediaQuery.of(context).size.height;
+    return GestureDetector(
+      onTap: () {
+        print("opening dawpage Now");
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => dawpage(this.session, this.session.currentLocalFile, true, 100)),
+        );
+
+      },
+      child: Container(
+        decoration: const BoxDecoration(
+
+            border: Border(
+              top: BorderSide(color: Colors.white, width: 5),
+              left: BorderSide(color: Colors.white, width: 2.5),
+              right: BorderSide(color: Colors.white, width: 2.5),
+              bottom: BorderSide(color: Colors.white, width: 2.5),
+            ),
+            color: Colors.green
+        ),
+        width: deviceWidth / 3,
+        height: deviceLength / 3,
+
+      ),
     );
   }
 }
