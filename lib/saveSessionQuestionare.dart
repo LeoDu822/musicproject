@@ -46,6 +46,7 @@ class SavedSessionForm extends StatelessWidget {
                 File x = new File(currentSession.currentLocalFile);
                 File y = new File("/storage/emulated/0/Download/$name.wav");
                 y = await x.copy("/storage/emulated/0/Download/$name.wav");
+                currentSession.currentLocalFile = "/storage/emulated/0/Download/$name.wav";
                 Map<String, int> newCurrentSession = {};
 
                 int count = 0;
@@ -88,7 +89,8 @@ class SavedSessionForm extends StatelessWidget {
               db.collection("users").doc(AuthenticationHelper().uid).collection("sessions").doc(name).set(currentSession.toJson());
 
 
-            } else if (Platform.isIOS) {
+            }
+              else if (Platform.isIOS) {
                 Directory? downloads = await getApplicationDocumentsDirectory();
                 File x = new File(currentSession.currentLocalFile);
                 File y = new File(downloads!.path + "/" + "$name.wav");
