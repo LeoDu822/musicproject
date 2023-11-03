@@ -40,6 +40,7 @@ class SavedSessionForm extends StatelessWidget {
               height: 10,
             ),
             ElevatedButton(onPressed: () async {
+              String ogName = name;
               if (Platform.isAndroid) {
 
 
@@ -86,7 +87,7 @@ class SavedSessionForm extends StatelessWidget {
 
 
 
-              db.collection("users").doc(AuthenticationHelper().uid).collection("sessions").doc(name).set(currentSession.toJson());
+              db.collection("users").doc(AuthenticationHelper().uid).collection("sessions").doc(ogName).set(currentSession.toJson());
 
 
             }
@@ -140,7 +141,7 @@ class SavedSessionForm extends StatelessWidget {
               }
 
 
-              db.collection("users").doc(AuthenticationHelper().uid).collection("sessions").doc(name).set(currentSession.toJson());
+              db.collection("users").doc(AuthenticationHelper().uid).collection("sessions").doc(ogName).set(currentSession.toJson());
             //  db.collection("users").doc(AuthenticationHelper().uid).collection("sessions").add(currentSession.toJson());
             }, child: Text("Save"))
           ],
