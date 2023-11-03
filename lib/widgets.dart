@@ -64,7 +64,8 @@ class dawObject extends StatelessWidget {
 
 class sessionObject extends StatelessWidget{
   late sessionUtility session;
-  sessionObject(this.session);
+  late String title;
+  sessionObject(this.title, this.session);
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -92,7 +93,9 @@ class sessionObject extends StatelessWidget{
         ),
         width: deviceWidth / 3,
         height: deviceLength / 3,
-
+        child: Center(
+          child: Text(title),
+        ),
       ),
     );
   }

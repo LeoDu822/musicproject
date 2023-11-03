@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:musicproject/questionare.dart';
+import 'package:musicproject/saveSessionQuestionare.dart';
 import 'package:musicproject/savedsession.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -408,7 +409,7 @@ void chordScreen(){
 
   }
 
-  int _timerDuration = 20000000; // Example: 60 seconds
+  int _timerDuration = 20000; // Example: 60 seconds
 
   // Variable to hold the current time remaining
   int _currentTime = 0;
@@ -455,7 +456,7 @@ void chordScreen(){
       // Update the time remaining
       setState(() {
         _currentTime = _timerDuration - timer.tick;
-        print(timer.tick);
+
         //if we have data left and the current time is greater then the previous time
         if (session.track1.durations.length > i+1 && (timer.tick > previoustime && timer.tick < previoustime+100)) {
           //play the next track
@@ -479,7 +480,6 @@ void chordScreen(){
 
       // Check if the timer has completed
       if (timer.tick >= _timerDuration) {
-        print(_timerDuration);
         timer.cancel(); // Cancel the timer
         _onTimerComplete(); // Execute the timer completion function
       }
@@ -488,6 +488,14 @@ void chordScreen(){
 
   // Function to stop the timer
   void _stopTimer() {
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
+      _onTimerComplete();
+      setState(() {
+        _currentTime = 0;
+      });
+    }
+
     refreshaudioPlayers();
     if (_timer != null && _timer!.isActive) {
       _timer!.cancel();
@@ -538,27 +546,20 @@ void chordScreen(){
                 IconButton(
                     onPressed: () {
 
-                      db.collection("users").doc(AuthenticationHelper().uid).collection("sessions").add(session.toJson());
-
-                      // root of our database ~/
-                      /*
+                    //  db.collection("users").doc(AuthenticationHelper().uid).collection("sessions").add(session.toJson());
                       setState(() {
                          showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
 
-                              content: QuestionnaireForm(
-                                  session.currentLocalFile), // Display the form here
+                              content: SavedSessionForm(
+                                  session), // Display the form here
                             );
                           },
                         );
                       });
-                      */
 
-                      // fileNumber++;
-                      // File x = new File(currentLocalFile);
-                      // x.copy("/storage/emulated/0/Download/audio10.wav");
                     },
                     // await localAudioFile.writeAsBytes(await r.bodyBytes);                    },
                     icon: Icon(Icons.save_outlined),
@@ -747,7 +748,20 @@ void chordScreen(){
 
 
                                   GestureDetector(
-                                    onTap: nextpagemelody,
+                                    onTap: () {
+                                      setState(() {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+
+                                              content: QuestionnaireForm(
+                                                  session.currentLocalFile), // Display the form here
+                                            );
+                                          },
+                                        );
+                                      });
+                                    },
                                     child: Container(
                                         height: 25,
                                         width: deviceWidth/6,
@@ -761,7 +775,7 @@ void chordScreen(){
                                             borderRadius: BorderRadius.circular(3)
                                         ),
                                         alignment: Alignment.center,
-                                        child: Text("Saved Melodies", style: TextStyle(
+                                        child: Text("Save Melody", style: TextStyle(
                                             fontFamily: "Tektur", fontSize: deviceWidth/55
                                         ),)
                                     ),

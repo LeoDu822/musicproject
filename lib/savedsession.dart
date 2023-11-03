@@ -28,7 +28,7 @@ class sessionPageState extends State<sessionpage> {
   Future<QuerySnapshot<Map<String, dynamic>>> fetchData() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
-    return db.collection("users").doc("lYOz2U9nyBNz2pTx0A9rtSIOtDd2").collection("sessions").get();
+    return db.collection("users").doc(AuthenticationHelper().uid).collection("sessions").get();
 
   }
 
@@ -62,8 +62,7 @@ class sessionPageState extends State<sessionpage> {
                 print(snapshot.data?.docs);
                 List<sessionObject> sessions = [];
                 for (var i in snapshot.data!.docs) {
-                  // print(i.id);
-                  // print(i.data()["track1"]);
+
                   sessionUtility session = new sessionUtility();
                   session.currentLocalFile = i.data()["currentLocalFile"];
 
@@ -120,23 +119,17 @@ class sessionPageState extends State<sessionpage> {
                   }
 
                   session.track2.durations = newDurations;
-                  length = i.data()["track1"]["widgets"] as int;
+                  length = i.data()["track2"]["widgets"] as int;
                   for (int x = 0; x < length; x++){
                     session.track2.track1.add(dawObject(100));
                   }
-
-
-
                   for (int x = 0; x < length; x++){
-                    session.track2.track1.add(dawObject(100));
+                    AudioPlayer test = new AudioPlayer();
+                    test.setSourceDeviceFile(session.track2.filePaths[x]);
+                    session.track2.audioPlayers.add(test);
                   }
-                  // for (int x = 0; x < length; x++){
-                  //   AudioPlayer test = new AudioPlayer();
-                  //   test.setSourceDeviceFile(session.track2.filePaths[x]);
-                  //   session.track2.audioPlayers.add(test);
-                  // }
 
-                  sessions.add(sessionObject(session));
+                  sessions.add(sessionObject(i.id,session));
                 }
 
                 return Row(

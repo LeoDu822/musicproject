@@ -35,6 +35,7 @@ class sessionUtility
 {
   TrackListClass track1 = new TrackListClass();
   TrackListClass track2 = new TrackListClass();
+  bool hasSignedIn = false;
   late Map<String, int> audioFilesandDurationMap = {};
   String currentLocalFile = "";
 
@@ -44,15 +45,13 @@ class sessionUtility
     sessionMap["track1"] = {
       "filePaths" : track1.filePaths,
       "durations" : track1.durations,
-      "audioPlayers" : track1.audioPlayers,
-      "widgets" : track1.track1
+      "widgets" : track1.track1.length
     };
 
     sessionMap["track2"] = {
       "filePaths" : track2.filePaths,
       "durations" : track2.durations,
-      "audioPlayers" : track2.audioPlayers,
-      "widgets" : track2.track1
+      "widgets" : track2.track1.length
     };
 
     sessionMap["audioFilesandDurationsMap"] = audioFilesandDurationMap;
