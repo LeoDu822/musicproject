@@ -108,7 +108,7 @@ class dawPageState extends State<dawpage> {
       _selectedFile = File(result.files.single.path!);
 
 
-      var url = 'https://new-algorithm-thechosenonech1.replit.app/'; // AWS/ec2 host
+      var url = 'https://new-algorithm-thechosenonech1.replit.app'; // AWS/ec2 host
 
       Map<String, String> headers = {
         "Connection": "Keep-Alive",
@@ -598,7 +598,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "C";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item1,
                       child: Text('C Major'),
@@ -614,7 +614,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "D";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item3,
                       child: Text('D Major'),
@@ -622,7 +622,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "A";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item4,
                       child: Text('A Major'),
@@ -630,7 +630,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "E";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item5,
                       child: Text('E Major'),
@@ -638,7 +638,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "B";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item6,
                       child: Text('B Major'),
@@ -646,7 +646,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "F2";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item7,
                       child: Text('F# Major'),
@@ -654,7 +654,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "C2";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item8,
                       child: Text('C# Major'),
@@ -662,7 +662,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "a";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item8,
                       child: Text('a minor'),
@@ -670,7 +670,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "e";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item8,
                       child: Text('e minor'),
@@ -678,7 +678,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "b";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item8,
                       child: Text('b minor'),
@@ -686,7 +686,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "f2";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item8,
                       child: Text('f# minor'),
@@ -694,7 +694,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "c2";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item8,
                       child: Text('c# minor'),
@@ -702,7 +702,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "g2";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item8,
                       child: Text('g# minor'),
@@ -711,7 +711,7 @@ void chordScreen(){
                       onTap: () async {
                         key = "d2";
                         print(key);
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item8,
                       child: Text('d# minor'),
@@ -719,7 +719,7 @@ void chordScreen(){
                     PopupMenuItem(
                       onTap: () async {
                         key = "a2";
-                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app//setChordsKey/$key'));
+                        await http.get(Uri.parse('https://new-algorithm-thechosenonech1.replit.app/setChordsKey/$key'));
                       },
                       value: MenuItem.item8,
                       child: Text('a# minor'),
