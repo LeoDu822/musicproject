@@ -108,7 +108,35 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
-
+              SizedBox(
+                height: 50,
+                width: 500,
+                child: ElevatedButton(
+                  onPressed: (){
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => Signup()));
+                  },
+                  child: Text("Sign up",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontFamily: "Metropolis",
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 5.0,
+                    backgroundColor: Colors.blue[100],
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
         ),
           ),
