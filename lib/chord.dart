@@ -34,7 +34,7 @@ class chordPageState extends State<chordpage> {
   File? _selectedFile;
   Map <String, dynamic> fullchords = {};
   List <Widget> chordbuttons = [];
-  String url = "https://newalgorithm.thechosenonech1.repl.co";
+  String url = "https://new-algorithm-thechosenonech1.replit.app/";
   final sessionUtility session;
 
   chordPageState(this.session, this._selectedFile){
