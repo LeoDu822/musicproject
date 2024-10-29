@@ -108,6 +108,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
+<<<<<<< Updated upstream
               SizedBox(
                 height: 50,
                 width: 500,
@@ -137,6 +138,9 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
+=======
+              
+>>>>>>> Stashed changes
             ],
         ),
           ),
