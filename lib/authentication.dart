@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 
 class AuthenticationHelper {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth();
 
 
   get user => _auth.currentUser;
